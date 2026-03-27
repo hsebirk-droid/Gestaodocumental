@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="e-coordina - Plataforma de Coordenação de Atividades Empresariais. Gestão documental, controlo de acessos e conformidade legal.">
+    <meta name="author" content="e-coordina Platform">
+    <title>e-coordina | Plataforma de Coordenação Empresarial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f0f4f8;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0b2b3b 0%, #1c4e6f 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1:before {
+            content: "📋";
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+
+        .app-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 1.5rem auto;
+            gap: 1.5rem;
+            padding: 0 1.5rem;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            height: fit-content;
+            position: sticky;
+            top: 85px;
+        }
+
+        .sidebar-header {
+            background: #1c4e6f;
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .sidebar-nav {
+            padding: 0.5rem 0;
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 0.7rem 1.2rem;
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+            color: #2c4c6c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .nav-item:hover {
+            background: #e9f0f5;
+            border-left-color: #2c7da0;
+        }
+
+        .nav-item.active {
+            background: #e1f0f9;
+            border-left-color: #0f6b8c;
+            color: #0a4b6e;
+            font-weight: 600;
+        }
+
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-height: 70vh;
+        }
+
+        .content-header {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2edf2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .content-header h2 {
+            font-size: 1.3rem;
+            color: #154e6b;
+        }
+
+        .breadcrumb {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .content-body {
+            padding: 1.5rem;
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #e2edf2;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1c4e6f;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #2c4c6c;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1c4e6f;
+            box-shadow: 0 0 0 2px rgba(28,78,111,0.2);
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary { background: #1c4e6f; color: white; }
+        .btn-primary:hover { background: #0f3b56; transform: translateY(-1px); }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; transform: translateY(-1px); }
+        .btn-warning { background: #ffc107; color: #1a2c3e; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-secondary { background: #e2edf2; color: #1c4e6f; }
+        .btn-secondary:hover { background: #cbdde6; }
+
+        .table-demo {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .table-demo th, .table-demo td {
+            border: 1px solid #dee2e6;
+            padding: 0.6rem;
+            text-align: left;
+        }
+        .table-demo th {
+            background: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+
+        .alert {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .alert-success { background: #d4edda; border-left: 4px solid #28a745; }
+        .alert-info { background: #eef5fa; border-left: 4px solid #1c4e6f; }
+        .alert-warning { background: #fff3cd; border-left: 4px solid #ffc107; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #e2edf2;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1c4e6f;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .app-container { flex-direction: column; }
+            .sidebar { width: 100%; position: static; }
+            .sidebar-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.8rem; }
+            .nav-item { flex: 1 0 auto; border-left: none; border-bottom: 2px solid transparent; justify-content: center; }
+            .nav-item.active { border-bottom-color: #0f6b8c; }
+            .content-header { flex-direction: column; align-items: flex-start; }
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1c4e6f;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2edf2;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>e-coordina</h1>
+        <div class="user-info">👤 Demo | Coordenador | Centro: Parque Industrial</div>
+    </div>
+</div>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">📋 MENU PRINCIPAL</div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-page="dashboard">🏠 Dashboard</div>
+            <div class="nav-item" data-page="gestao-empresas">🏗️ Empresas</div>
+            <div class="nav-item" data-page="gestao-trabalhos">📋 Trabalhos</div>
+            <div class="nav-item" data-page="documentos">📄 Documentos</div>
+            <div class="nav-item" data-page="acessos">🚪 Controlo Acessos</div>
+            <div class="nav-item" data-page="coordenacoes">🔄 Coordenações</div>
+            <div class="nav-item" data-page="prp-acoes">⚠️ Ações Corretivas</div>
+            <div class="nav-item" data-page="prp-comunicacoes">📢 Comunicações Risco</div>
+            <div class="nav-item" data-page="fornecedor">📌 Novo Fornecedor</div>
+            <div class="nav-item" data-page="config">⚙️ Configurações</div>
+            <div class="nav-item" data-page="sobre">ℹ️ Sobre</div>
+        </div>
+    </aside>
+
+    <main class="content-area">
+        <div class="content-header">
+            <h2 id="page-title">Dashboard</h2>
+            <div class="breadcrumb" id="breadcrumb">Início / Visão Geral</div>
+        </div>
+        <div class="content-body" id="content-body"></div>
+    </main>
+</div>
+
+<div id="modal" class="modal-overlay">
+    <div class="modal-content" id="modal-content"></div>
+</div>
+
+<script>
+    // Estado da aplicação (simulado)
+    let appState = {
+        empresas: [
+            { id: 1, nif: "513952608", nome: "TESTE EMPRESA", ativa: true, email: "contato@teste.pt", trabalhos: 2 },
+            { id: 2, nif: "515083933", nome: "E-coordina SA", ativa: true, email: "info@ecoordina.pt", trabalhos: 3 },
+            { id: 3, nif: "509059040", nome: "ISO Construções", ativa: true, email: "obras@iso.pt", trabalhos: 1 }
+        ],
+        trabalhadores: [
+            { id: 1, nome: "João Silva", nif: "123456789", empresa: "TESTE EMPRESA", acesso: "permitido", cargo: "Eletricista" },
+            { id: 2, nome: "Maria Santos", nif: "987654321", empresa: "TESTE EMPRESA", acesso: "negado", motivo: "Formação em altura caducada" },
+            { id: 3, nome: "Pedro Costa", nif: "456789123", empresa: "E-coordina SA", acesso: "permitido", cargo: "Coordenador" }
+        ],
+        documentos: [
+            { id: 1, nome: "Declaração Não Dívida AT", empresa: "TESTE EMPRESA", estado: "pendente", validade: "-", tipo: "Empresa" },
+            { id: 2, nome: "Seguro Acidentes Trabalho", empresa: "TESTE EMPRESA", estado: "valido", validade: "31/12/2026", tipo: "Empresa" },
+            { id: 3, nome: "Formação em Altura", trabalhador: "Maria Santos", estado: "caducado", validade: "01/01/2026", tipo: "Trabalhador" }
+        ],
+        trabalhos: [
+            { id: 1, codigo: "TRAB-001", nome: "Manutenção Elétrica", centro: "Parque Industrial", empresa: "TESTE EMPRESA", inicio: "01/03/2026", status: "execucao" },
+            { id: 2, codigo: "TRAB-002", nome: "Construção Muro", centro: "Obra Norte", empresa: "ISO Construções", inicio: "15/02/2026", status: "execucao" }
+        ],
+        acessosRegistados: [
+            { id: 1, trabalhador: "João Silva", data: "27/03/2026", hora: "08:30", tipo: "entrada" },
+            { id: 2, trabalhador: "João Silva", data: "27/03/2026", hora: "17:15", tipo: "saída" }
+        ],
+        acoesCorretivas: [
+            { id: "AC-001", descricao: "Falta de EPI's no setor A", prioridade: "alta", estado: "planificado", empresa: "TESTE EMPRESA" },
+            { id: "AC-002", descricao: "Formação em altura não atualizada", prioridade: "media", estado: "realizado", empresa: "TESTE EMPRESA" }
+        ],
+        comunicacoesRisco: [
+            { id: "CR-001", centro: "Parque Industrial", data: "25/03/2026", descricao: "Risco de queda em escada", estado: "tratada", empresa: "TESTE EMPRESA" }
+        ]
+    };
+
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    
+    function showModal(content) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        modalContent.innerHTML = content + `<div style="margin-top:1.5rem; text-align:right;"><button class="btn btn-secondary" onclick="closeModal()">Fechar</button></div>`;
+        modal.style.display = 'flex';
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.style.background = type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#1c4e6f';
+        toast.style.color = type === 'warning' ? '#1a2c3e' : 'white';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Renderizadores de páginas
+    const pages = {
+        dashboard: () => `
+            <div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-number">${appState.empresas.length}</div><div class="stat-label">Empresas Ativas</div></div>
+                    <div class="stat-card"><div class="stat-number">${appState.trabalhos.length}</div><div class="stat-label">Trabalhos em Execução</div></div>
+                    <div class="stat-card"><div class="stat-number">${appState.documentos.filter(d => d.estado === 'pendente' || d.estado === 'caducado').length}</div><div class="stat-label">Documentos Pendentes</div></div>
+                    <div class="stat-card"><div class="stat-number">${appState.acessosRegistados.filter(a => a.data === new Date().toLocaleDateString('pt-PT')).length}</div><div class="stat-label">Acessos Hoje</div></div>
+                </div>
+                <div class="alert alert-success">✅ Bem-vindo ao e-coordina! Hoje é ${new Date().toLocaleDateString('pt-PT')}</div>
+                <div class="card">
+                    <div class="card-title">📊 Indicadores de Conformidade</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Indicador</th><th>Estado</th><th>Detalhe</th></tr></thead>
+                        <tbody>
+                            <tr><td>📄 Documentos pendentes</td><td><span class="badge badge-warning">Atenção</span></td><td>${appState.documentos.filter(d => d.estado === 'pendente' || d.estado === 'caducado').length} por validar</td></tr>
+                            <tr><td>🚪 Acessos negados</td><td><span class="badge badge-danger">Incidência</span></td><td>${appState.trabalhadores.filter(t => t.acesso === 'negado').length} trabalhador(es) sem acesso</td></tr>
+                            <tr><td>⚠️ Ações corretivas</td><td><span class="badge badge-info">Em andamento</span></td><td>${appState.acoesCorretivas.filter(a => a.estado !== 'realizado').length} ações pendentes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">🔔 Últimas Atividades</div>
+                    <ul style="margin-left:1.2rem;">
+                        <li>✅ 08:30 - João Silva registou entrada no Parque Industrial</li>
+                        <li>📄 09:15 - TESTE EMPRESA carregou Seguro RC</li>
+                        <li>⚠️ 10:00 - Nova comunicação de risco registada</li>
+                    </ul>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="navigateTo('documentos')">📄 Ver Documentos Pendentes</button>
+                    <button class="btn btn-success" onclick="navigateTo('acessos')">🚪 Controlo de Acessos</button>
+                </div>
+            </div>
+        `,
+        
+        "gestao-empresas": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">🏢 Empresas Registadas</div>
+                    <table class="table-demo">
+                        <thead><tr><th>NIF</th><th>Nome</th><th>Email</th><th>Trabalhos</th><th>Ações</th></tr></thead>
+                        <tbody>
+                            ${appState.empresas.map(e => `
+                                <tr>
+                                    <td>${e.nif}</td><td>${e.nome}</td><td>${e.email}</td><td>${e.trabalhos}</td>
+                                    <td><button class="btn-secondary" style="padding:0.2rem 0.6rem;" onclick="showModal('<h3>${e.nome}</h3><p>NIF: ${e.nif}</p><p>Email: ${e.email}</p><p>Trabalhos: ${e.trabalhos}</p><p>Status: ${e.ativa ? 'Ativa' : 'Inativa'}</p>')">Detalhes</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">➕ Registar Nova Empresa</div>
+                    <div class="form-group"><label>NIF *</label><input type="text" id="novoNif" placeholder="123456789"></div>
+                    <div class="form-group"><label>Nome *</label><input type="text" id="novoNome" placeholder="Nome da Empresa"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="novoEmail" placeholder="contato@empresa.pt"></div>
+                    <button class="btn btn-success" onclick="registrarEmpresa()">Registrar Empresa</button>
+                </div>
+            </div>
+        `,
+        
+        "gestao-trabalhos": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">📋 Trabalhos em Execução</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Código</th><th>Nome</th><th>Centro</th><th>Empresa</th><th>Data Início</th><th>Status</th></tr></thead>
+                        <tbody>
+                            ${appState.trabalhos.map(t => `
+                                <tr>
+                                    <td>${t.codigo}</td><td>${t.nome}</td><td>${t.centro}</td><td>${t.empresa}</td><td>${t.inicio}</td>
+                                    <td><span class="badge badge-success">Em execução</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">➕ Criar Novo Trabalho</div>
+                    <div class="form-group"><label>Nome do Trabalho *</label><input type="text" id="trabNome" placeholder="Ex: Pintura Fachada"></div>
+                    <div class="form-group"><label>Centro</label><select id="trabCentro"><option>Parque Industrial</option><option>Obra Norte</option></select></div>
+                    <div class="form-group"><label>Empresa Contratada</label><select id="trabEmpresa">${appState.empresas.map(e => `<option>${e.nome}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Data Início</label><input type="date" id="trabInicio"></div>
+                    <button class="btn btn-success" onclick="criarTrabalho()">Guardar e Coordenar</button>
+                </div>
+            </div>
+        `,
+        
+        "documentos": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">📄 Pedidos de Documentação Ativos</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Documento</th><th>Empresa/Trabalhador</th><th>Estado</th><th>Ações</th></tr></thead>
+                        <tbody>
+                            ${appState.documentos.map(d => `
+                                <tr>
+                                    <td>${d.nome}</td><td>${d.empresa || d.trabalhador || '-'}</td>
+                                    <td><span class="badge ${d.estado === 'valido' ? 'badge-success' : d.estado === 'caducado' ? 'badge-danger' : 'badge-warning'}">${d.estado === 'valido' ? 'Válido' : d.estado === 'caducado' ? 'Caducado' : 'Pendente'}</span></td>
+                                    <td><button class="btn-primary" style="padding:0.2rem 0.8rem;" onclick="carregarDocumento(${d.id})">Carregar</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-info">💡 Clique em "Carregar" para simular o upload de um documento. Após carregado, o documento aguarda validação.</div>
+            </div>
+        `,
+        
+        "acessos": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">🚪 Controlo de Acessos - Centro: Parque Industrial</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Trabalhador</th><th>Empresa</th><th>Cargo</th><th>Acesso</th><th>Ação</th></tr></thead>
+                        <tbody>
+                            ${appState.trabalhadores.map(t => `
+                                <tr>
+                                    <td>${t.nome}</td><td>${t.empresa}</td><td>${t.cargo || '-'}</td>
+                                    <td><span class="badge ${t.acesso === 'permitido' ? 'badge-success' : 'badge-danger'}">${t.acesso === 'permitido' ? 'Permitido' : 'Negado'}</span></td>
+                                    <td>
+                                        <button class="btn-success" style="padding:0.2rem 0.8rem;" onclick="registrarEntrada('${t.nome}')">Registrar Entrada</button>
+                                        ${t.acesso === 'negado' ? `<button class="btn-warning" style="padding:0.2rem 0.8rem; margin-left:0.5rem;" onclick="solicitarAutorizacao('${t.nome}', '${t.motivo}')">Solicitar 24h</button>` : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">📋 Últimos Registos de Entrada/Saída</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Trabalhador</th><th>Data</th><th>Hora</th><th>Tipo</th></tr></thead>
+                        <tbody>
+                            ${appState.acessosRegistados.map(a => `<tr><td>${a.trabalhador}</td><td>${a.data}</td><td>${a.hora}</td><td>${a.tipo === 'entrada' ? '🚪 Entrada' : '🚶 Saída'}</td></tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `,
+        
+        "coordenacoes": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">🔄 Coordenações Pendentes</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Trabalho</th><th>Empresa</th><th>Data Submissão</th><th>Status</th><th>Ação</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>Manutenção Elétrica</td><td>TESTE EMPRESA</td><td>26/03/2026</td>
+                                <td><span class="badge badge-warning">Pendente Validação</span></td>
+                                <td><button class="btn-success" onclick="validarCoordenacao()">Validar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Assistente de Coordenação</div>
+                    <p>Preencha a lista de trabalhadores, máquinas e subcontratos que acedem ao trabalho.</p>
+                    <button class="btn btn-primary" onclick="abrirAssistente()">✏️ Abrir Assistente</button>
+                </div>
+            </div>
+        `,
+        
+        "prp-acoes": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">⚠️ Ações Corretivas</div>
+                    <table class="table-demo">
+                        <thead><tr><th>Código</th><th>Descrição</th><th>Prioridade</th><th>Estado</th><th>Ações</th></tr></thead>
+                        <tbody>
+                            ${appState.acoesCorretivas.map(a => `
+                                <tr>
+                                    <td>${a.id}</td><td>${a.descricao}</td>
+                                    <td><span class="badge ${a.prioridade === 'alta' ? 'badge-danger' : 'badge-warning'}">${a.prioridade}</span></td>
+                                    <td>${a.estado}</td>
+                                    <td>
+                                        <button class="btn-secondary" onclick="realizarAcao('${a.id}')">Realizar</button>
+                                        <button class="btn-primary" onclick="avaliarAcao('${a.id}')">Avaliar</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">➕ Nova Ação Corretiva</div>
+                    <div class="form-group"><label>Descrição *</label><input type="text" id="novaAcaoDesc" placeholder="Descreva a situação de risco"></div>
+                    <div class="form-group"><label>Prioridade</label><select id="novaAcaoPrioridade"><option>alta</option><option>media</option><option>baixa</option></select></div>
+                    <div class="form-group"><label>Empresa Envolvida</label><select id="novaAcaoEmpresa"><option>TESTE EMPRESA</option><option>ISO Construções</option></select></div>
+                    <button class="btn btn-success" onclick="criarAcaoCorretiva()">Criar Ação Corretiva</button>
+                </div>
+            </div>
+        `,
+        
+        "prp-comunicacoes": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">📢 Comunicações de Risco</div>
+                    <table class="table-demo">
+                        <thead><tr><th>ID</th><th>Centro</th><th>Data</th><th>Descrição</th><th>Estado</th></tr></thead>
+                        <tbody>
+                            ${appState.comunicacoesRisco.map(c => `<tr><td>${c.id}</td><td>${c.centro}</td><td>${c.data}</td><td>${c.descricao}</td><td>${c.estado}</td></tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">➕ Nova Comunicação de Risco</div>
+                    <div class="form-group"><label>Centro</label><select id="comCentro"><option>Parque Industrial</option><option>Obra Norte</option></select></div>
+                    <div class="form-group"><label>Empresa</label><select id="comEmpresa"><option>TESTE EMPRESA</option><option>ISO Construções</option></select></div>
+                    <div class="form-group"><label>Descrição do Risco *</label><textarea id="comDescricao" rows="3" placeholder="Descreva a situação de risco encontrada..."></textarea></div>
+                    <button class="btn btn-primary" onclick="registrarComunicacaoRisco()">Registrar Comunicação</button>
+                </div>
+            </div>
+        `,
+        
+        "fornecedor": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">📌 Ativação de Novo Fornecedor</div>
+                    <div class="alert alert-info" style="margin-bottom:1rem;">
+                        <strong>Processo:</strong><br>
+                        1. Registrar empresa na base de dados<br>
+                        2. Criar trabalho e associar à empresa<br>
+                        3. Enviar credenciais de acesso<br>
+                        4. Fornecedor preenche coordenação e carrega documentos
+                    </div>
+                    <div class="form-group"><label>NIF da Empresa *</label><input type="text" id="fornNif" placeholder="123456789"></div>
+                    <div class="form-group"><label>Nome da Empresa *</label><input type="text" id="fornNome" placeholder="Nova Empresa Fornecedora"></div>
+                    <div class="form-group"><label>Email do Interlocutor *</label><input type="email" id="fornEmail" placeholder="contato@fornecedor.pt"></div>
+                    <button class="btn btn-success" onclick="ativarFornecedor()">📧 Ativar e Enviar Convite</button>
+                </div>
+                <div class="alert alert-warning">⚠️ Após ativação, o fornecedor receberá um email com credenciais de acesso à plataforma.</div>
+            </div>
+        `,
+        
+        "config": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">⚙️ Configurações Gerais</div>
+                    <div class="form-group"><label>Período de Antecedência para Notificações</label><select id="configAntecedencia"><option>7 dias</option><option selected>15 dias</option><option>30 dias</option></select></div>
+                    <div class="form-group"><label>Duração dos Links de Download</label><select id="configLinks"><option>3 dias</option><option selected>7 dias</option><option>15 dias</option></select></div>
+                    <div class="form-group"><label>Controlo de Acessos - Nível de Exigência</label><select id="configAcesso"><option>Apenas documentação da empresa</option><option selected>Empresa e contrato</option><option>Todos os níveis</option></select></div>
+                    <button class="btn btn-primary" onclick="salvarConfig()">Salvar Configurações</button>
+                </div>
+            </div>
+        `,
+        
+        "sobre": () => `
+            <div>
+                <div class="card">
+                    <div class="card-title">ℹ️ Sobre o e-coordina</div>
+                    <p><strong>e-coordina</strong> é uma plataforma web para gestão documental e coordenação de atividades empresariais, desenvolvida em conformidade com a Lei nº 102/2009 e o Código do Trabalho português.</p>
+                    <p>Esta demonstração interativa apresenta as principais funcionalidades da plataforma:</p>
+                    <ul style="margin-left:1.5rem; margin-top:0.5rem;">
+                        <li>📋 Gestão de empresas, trabalhos e centros</li>
+                        <li>📄 Pedidos de documentação e validação</li>
+                        <li>🚪 Controlo de acessos em tempo real</li>
+                        <li>🔄 Coordenações e cadeia de subcontratação</li>
+                        <li>⚠️ Módulo PRP (Ações corretivas e comunicações de risco)</li>
+                        <li>📌 Ativação de novos fornecedores</li>
+                    </ul>
+                    <hr style="margin:1rem 0;">
+                    <p><strong>Versão:</strong> 5.6.2<br><strong>Baseado nos manuais técnicos e-coordina</strong></p>
+                </div>
+            </div>
+        `
+    };
+
+    let currentPage = 'dashboard';
+
+    function navigateTo(page) {
+        currentPage = page;
+        const renderer = pages[page];
+        if (renderer) {
+            document.getElementById('content-body').innerHTML = renderer();
+            const titles = {
+                'dashboard': 'Dashboard',
+                'gestao-empresas': '🏗️ Gestão de Empresas',
+                'gestao-trabalhos': '📋 Gestão de Trabalhos',
+                'documentos': '📄 Documentação',
+                'acessos': '🚪 Controlo de Acessos',
+                'coordenacoes': '🔄 Coordenações',
+                'prp-acoes': '⚠️ Ações Corretivas',
+                'prp-comunicacoes': '📢 Comunicações de Risco',
+                'fornecedor': '📌 Novo Fornecedor',
+                'config': '⚙️ Configurações',
+                'sobre': 'ℹ️ Sobre'
+            };
+            document.getElementById('page-title').innerHTML = titles[page] || page;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === page) item.classList.add('active');
+            });
+        }
+    }
+
+    // Funções de ação
+    window.registrarEmpresa = () => {
+        const nif = document.getElementById('novoNif')?.value;
+        const nome = document.getElementById('novoNome')?.value;
+        if (nif && nome) {
+            appState.empresas.push({ id: appState.empresas.length + 1, nif, nome, ativa: true, email: document.getElementById('novoEmail')?.value || '', trabalhos: 0 });
+            showToast(`✅ Empresa "${nome}" registada com sucesso!`, 'success');
+            navigateTo('gestao-empresas');
+        } else showToast('Preencha NIF e Nome da empresa', 'warning');
+    };
+    
+    window.criarTrabalho = () => {
+        const nome = document.getElementById('trabNome')?.value;
+        if (nome) {
+            showToast(`📋 Trabalho "${nome}" criado e coordenado. Notificação enviada para o fornecedor!`, 'success');
+            navigateTo('gestao-trabalhos');
+        } else showToast('Preencha o nome do trabalho', 'warning');
+    };
+    
+    window.carregarDocumento = (id) => {
+        showToast('📎 Documento carregado com sucesso! Aguardando validação do coordenador.', 'success');
+        setTimeout(() => navigateTo('documentos'), 1000);
+    };
+    
+    window.registrarEntrada = (nome) => {
+        const now = new Date();
+        const hora = now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+        const data = now.toLocaleDateString('pt-PT');
+        appState.acessosRegistados.unshift({ id: appState.acessosRegistados.length + 1, trabalhador: nome, data, hora, tipo: 'entrada' });
+        showToast(`✅ Entrada registada: ${nome} - ${hora}`, 'success');
+        navigateTo('acessos');
+    };
+    
+    window.solicitarAutorizacao = (nome, motivo) => {
+        showToast(`📧 Solicitação de autorização 24h enviada ao coordenador para ${nome}. Motivo: ${motivo || 'Acesso negado'}`, 'info');
+    };
+    
+    window.validarCoordenacao = () => {
+        showToast('✅ Coordenação validada com sucesso! Documento "Lista de trabalhadores" gerado automaticamente.', 'success');
+    };
+    
+    window.abrirAssistente = () => {
+        showModal(`
+            <h3>📝 Assistente de Coordenação</h3>
+            <p><strong>Empresa:</strong> TESTE EMPRESA</p>
+            <p><strong>Trabalho:</strong> Manutenção Elétrica</p>
+            <div class="form-group"><label>Trabalhador</label><input placeholder="Nome do trabalhador"></div>
+            <div class="form-group"><label>Máquina/Veículo</label><input placeholder="Matrícula / Identificação"></div>
+            <div class="form-group"><label>Subcontratos</label><input placeholder="Empresa subcontratada (se aplicável)"></div>
+            <button class="btn btn-success" onclick="closeModal(); showToast('Coordenação submetida com sucesso! Aguardando validação.', 'success')">Submeter Coordenação</button>
+        `);
+    };
+    
+    window.realizarAcao = (id) => {
+        showModal(`
+            <h3>✅ Realizar Ação Corretiva</h3>
+            <p><strong>Ação:</strong> ${id}</p>
+            <div class="form-group"><label>Observações *</label><textarea rows="3" placeholder="Descreva as ações realizadas..."></textarea></div>
+            <div class="form-group"><label>Custo (€)</label><input placeholder="0.00"></div>
+            <button class="btn btn-success" onclick="closeModal(); showToast('Ação realizada com sucesso! Aguardando avaliação.', 'success')">Registar Realização</button>
+        `);
+    };
+    
+    window.avaliarAcao = (id) => {
+        showModal(`
+            <h3>📊 Avaliar Ação Corretiva</h3>
+            <p><strong>Ação:</strong> ${id}</p>
+            <div class="form-group"><label>Eficácia (%)</label><input placeholder="0-100" value="85"></div>
+            <div class="form-group"><label>Observações</label><textarea rows="3" placeholder="Avaliação da eficácia..."></textarea></div>
+            <button class="btn btn-success" onclick="closeModal(); showToast('Ação avaliada com sucesso!', 'success')">Concluir Avaliação</button>
+        `);
+    };
+    
+    window.criarAcaoCorretiva = () => {
+        const desc = document.getElementById('novaAcaoDesc')?.value;
+        if (desc) {
+            const prioridade = document.getElementById('novaAcaoPrioridade')?.value;
+            showToast(`⚠️ Ação corretiva criada com prioridade ${prioridade}. Notificação enviada à empresa.`, 'success');
+            navigateTo('prp-acoes');
+        } else showToast('Preencha a descrição da ação', 'warning');
+    };
+    
+    window.registrarComunicacaoRisco = () => {
+        const desc = document.getElementById('comDescricao')?.value;
+        if (desc) {
+            showToast(`📢 Comunicação de risco registada com sucesso! Uma ação corretiva será gerada automaticamente.`, 'success');
+            navigateTo('prp-comunicacoes');
+        } else showToast('Preencha a descrição do risco', 'warning');
+    };
+    
+    window.ativarFornecedor = () => {
+        const nome = document.getElementById('fornNome')?.value;
+        const email = document.getElementById('fornEmail')?.value;
+        const nif = document.getElementById('fornNif')?.value;
+        if (nome && email && nif) {
+            appState.empresas.push({ id: appState.empresas.length + 1, nif, nome, ativa: true, email, trabalhos: 0 });
+            showToast(`📧 Fornecedor "${nome}" ativado! Email enviado para ${email} com credenciais de acesso.`, 'success');
+            navigateTo('fornecedor');
+        } else showToast('Preencha NIF, Nome e Email do fornecedor', 'warning');
+    };
+    
+    window.salvarConfig = () => {
+        showToast('⚙️ Configurações salvas com sucesso!', 'success');
+    };
+    
+    window.closeModal = closeModal;
+    window.showToast = showToast;
+    window.navigateTo = navigateTo;
+    
+    // Inicializar
+    navigateTo('dashboard');
+</script>
+</body>
+</html>
