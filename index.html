@@ -2,491 +2,105 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birkenstock | Gestão de Documentos e Acessos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Birkenstock S&CC Portugal | Gestão de Documentos e Acessos</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'DIN Next', 'Arial', sans-serif;
-            background: #f5f5f5;
-            color: #1a1a1a;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'DIN Next', 'Segoe UI', 'Roboto', 'Arial', sans-serif; background: #f5f5f5; color: #1a1a1a; line-height: 1.5; }
 
         :root {
             --birkenstock-blue: #003d7c;
             --birkenstock-dark-blue: #002a57;
             --birkenstock-green: #4a6a3b;
             --birkenstock-beige: #f4f0e6;
-            --birkenstock-gray: #6c6e6f;
+            --birkenstock-orange: #f4a261;
+            --birkenstock-red: #c44536;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--birkenstock-blue), var(--birkenstock-dark-blue));
-            color: white;
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        .header { background: linear-gradient(135deg, var(--birkenstock-blue), var(--birkenstock-dark-blue)); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo-container { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .logo-placeholder { background: white; padding: 0.4rem 1rem; border-radius: 8px; font-weight: bold; font-size: 1.1rem; color: var(--birkenstock-blue); text-align: center; }
+        .logo-placeholder small { font-size: 0.65rem; display: block; color: var(--birkenstock-green); }
+        .logo-text h1 { font-size: 1.1rem; font-weight: 600; }
+        .logo-text p { font-size: 0.7rem; opacity: 0.9; }
+        .user-selector { display: flex; gap: 0.5rem; background: rgba(255,255,255,0.15); padding: 0.3rem 0.8rem; border-radius: 40px; flex-wrap: wrap; }
+        .user-btn { background: transparent; border: none; color: white; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.8rem; font-weight: 500; transition: all 0.2s; }
+        .user-btn.active { background: var(--birkenstock-green); }
+        .user-btn:hover { background: rgba(255,255,255,0.3); }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+        .app-container { display: flex; max-width: 1400px; margin: 1.5rem auto; gap: 1.5rem; padding: 0 1.5rem; }
+        .sidebar { width: 280px; min-width: 240px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); flex-shrink: 0; height: fit-content; position: sticky; top: 85px; }
+        .sidebar-header { background: var(--birkenstock-blue); color: white; padding: 1rem; font-weight: 600; border-radius: 12px 12px 0 0; }
+        .sidebar-nav { padding: 0.5rem 0; }
+        .nav-item { padding: 0.7rem 1.2rem; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 500; color: #2c3e50; }
+        .nav-item:hover { background: var(--birkenstock-beige); border-left-color: var(--birkenstock-green); }
+        .nav-item.active { background: var(--birkenstock-beige); border-left-color: var(--birkenstock-green); color: var(--birkenstock-blue); font-weight: 600; }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+        .content-area { flex: 1; min-width: 0; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+        .content-header { background: var(--birkenstock-beige); padding: 1rem 1.5rem; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .content-header h2 { font-size: 1.2rem; color: var(--birkenstock-blue); font-weight: 600; }
+        .content-body { padding: 1.5rem; max-height: calc(100vh - 160px); overflow-y: auto; }
 
-        .logo-placeholder {
-            background: white;
-            padding: 0.3rem 1rem;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--birkenstock-blue);
-        }
+        .card { background: white; border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; border: 1px solid #e0e0e0; }
+        .card-title { font-size: 1rem; font-weight: 600; color: var(--birkenstock-blue); margin-bottom: 1rem; border-bottom: 2px solid var(--birkenstock-green); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 500; font-size: 0.8rem; color: #555; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 0.9rem; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--birkenstock-blue); }
+        .btn { padding: 0.5rem 1rem; border-radius: 6px; border: none; font-weight: 500; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.3rem; }
+        .btn-primary { background: var(--birkenstock-blue); color: white; }
+        .btn-primary:hover { background: var(--birkenstock-dark-blue); }
+        .btn-success { background: var(--birkenstock-green); color: white; }
+        .btn-success:hover { background: #3a5a2b; }
+        .btn-warning { background: var(--birkenstock-orange); color: white; }
+        .btn-danger { background: var(--birkenstock-red); color: white; }
+        .btn-secondary { background: #e0e0e0; color: #333; }
+        .btn-sm { padding: 0.3rem 0.8rem; font-size: 0.75rem; }
+        .btn-excel { background: #1f724c; color: white; }
 
-        .logo-text h1 {
-            font-size: 1.2rem;
-        }
-
-        .logo-text p {
-            font-size: 0.7rem;
-            opacity: 0.9;
-        }
-
-        .user-selector {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.15);
-            padding: 0.3rem 0.8rem;
-            border-radius: 40px;
-        }
-
-        .user-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .user-btn.active {
-            background: var(--birkenstock-green);
-        }
-
-        .user-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .app-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 1.5rem auto;
-            gap: 1.5rem;
-            padding: 0 1.5rem;
-        }
-
-        .sidebar {
-            width: 280px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            flex-shrink: 0;
-            height: fit-content;
-            position: sticky;
-            top: 85px;
-        }
-
-        .sidebar-header {
-            background: var(--birkenstock-blue);
-            color: white;
-            padding: 1rem;
-            font-weight: 600;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .sidebar-nav {
-            padding: 0.5rem 0;
-        }
-
-        .nav-item {
-            padding: 0.7rem 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-
-        .nav-item:hover {
-            background: var(--birkenstock-beige);
-            border-left-color: var(--birkenstock-green);
-        }
-
-        .nav-item.active {
-            background: var(--birkenstock-beige);
-            border-left-color: var(--birkenstock-green);
-            color: var(--birkenstock-blue);
-            font-weight: 500;
-        }
-
-        .nav-item.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        .content-area {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-
-        .content-header {
-            background: var(--birkenstock-beige);
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .content-header h2 {
-            font-size: 1.2rem;
-            color: var(--birkenstock-blue);
-        }
-
-        .content-body {
-            padding: 1.5rem;
-            max-height: calc(100vh - 150px);
-            overflow-y: auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid #e0e0e0;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--birkenstock-blue);
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--birkenstock-green);
-            padding-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-input {
-            padding: 0.4rem 0.8rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.8rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-weight: 500;
-            font-size: 0.8rem;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--birkenstock-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--birkenstock-dark-blue);
-        }
-
-        .btn-success {
-            background: var(--birkenstock-green);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #3a5a2b;
-        }
-
-        .btn-warning {
-            background: #f4a261;
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #e0e0e0;
-            color: #333;
-        }
-
-        .btn-sm {
-            padding: 0.3rem 0.8rem;
-            font-size: 0.75rem;
-        }
-
-        .btn-excel {
-            background: #1f724c;
-            color: white;
-        }
-
-        .btn-excel:hover {
-            background: #0e5a3a;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #e0e0e0;
-            padding: 0.6rem;
-            text-align: left;
-        }
-
-        .table th {
-            background: var(--birkenstock-beige);
-            color: var(--birkenstock-blue);
-            font-weight: 600;
-        }
-
-        .badge {
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .badge-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .badge-info {
-            background: var(--birkenstock-beige);
-            color: var(--birkenstock-blue);
-        }
-
-        .alert {
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .alert-info {
-            background: var(--birkenstock-beige);
-            border-left: 4px solid var(--birkenstock-blue);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-        }
-
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--birkenstock-blue);
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .toast-message {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--birkenstock-blue);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 40px;
-            z-index: 2000;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10;
-            display: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-results div {
-            padding: 0.5rem;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-
-        .search-results div:hover {
-            background: var(--birkenstock-beige);
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                position: static;
-            }
-
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: wrap;
-            }
-
-            .nav-item {
-                flex: 1;
-                border-left: none;
-                border-bottom: 2px solid transparent;
-                justify-content: center;
-            }
-        }
+        .table-wrapper { overflow-x: auto; margin: 1rem 0; }
+        .table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 500px; }
+        .table th, .table td { border: 1px solid #e0e0e0; padding: 0.6rem; text-align: left; vertical-align: top; }
+        .table th { background: var(--birkenstock-beige); color: var(--birkenstock-blue); font-weight: 600; white-space: nowrap; }
+        .badge { padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; display: inline-block; white-space: nowrap; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-info { background: var(--birkenstock-beige); color: var(--birkenstock-blue); }
+        .alert { padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; }
+        .alert-info { background: var(--birkenstock-beige); border-left: 4px solid var(--birkenstock-blue); }
+        .alert-warning { background: #fff3cd; border-left: 4px solid var(--birkenstock-orange); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; border-radius: 12px; padding: 1rem; text-align: center; border: 1px solid #e0e0e0; }
+        .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--birkenstock-blue); line-height: 1.2; }
+        .filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+        .filter-input { padding: 0.4rem 0.8rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.8rem; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 12px; padding: 1.5rem; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .toast-message { position: fixed; bottom: 20px; right: 20px; background: var(--birkenstock-blue); color: white; padding: 12px 24px; border-radius: 40px; z-index: 2000; animation: slideIn 0.3s ease; font-size: 0.85rem; }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .search-box { position: relative; }
+        .search-results { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 10; display: none; }
+        .search-results div { padding: 0.5rem; cursor: pointer; border-bottom: 1px solid #eee; font-size: 0.8rem; }
+        .search-results div:hover { background: var(--birkenstock-beige); }
+        .tooltip { border-bottom: 1px dashed #999; cursor: help; }
+        @media (max-width: 768px) { html { font-size: 14px; } .app-container { flex-direction: column; } .sidebar { width: 100%; position: static; } .sidebar-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.8rem; } .nav-item { flex: 1; border-left: none; border-bottom: 2px solid transparent; justify-content: center; } .nav-item.active { border-bottom-color: var(--birkenstock-green); } .stats-grid { grid-template-columns: repeat(2, 1fr); } .filter-group { flex-direction: column; align-items: stretch; } .filter-input, .btn { width: 100%; } }
+        @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 <div class="header">
     <div class="header-content">
         <div class="logo-container">
-            <div class="logo-placeholder">
-                <strong>BIRKENSTOCK</strong>
-            </div>
-            <div class="logo-text">
-                <h1>Gestão de Documentos e Acessos</h1>
-                <p>S&CC Portugal</p>
-            </div>
+            <div class="logo-placeholder"><strong>BIRKENSTOCK</strong><small>S&CC Portugal</small></div>
+            <div class="logo-text"><h1>Gestão de Documentos e Acessos</h1><p>Controlo de Prestadores | Validação Documental</p></div>
         </div>
         <div class="user-selector">
             <button class="user-btn active" data-user="portaria">🚪 Portaria</button>
             <button class="user-btn" data-user="admin">👑 Administrador</button>
+            <button class="user-btn" data-user="visualizador">👁️ Visualizador</button>
         </div>
     </div>
 </div>
@@ -496,10 +110,12 @@
         <div class="sidebar-header">📋 MENU</div>
         <div class="sidebar-nav">
             <div class="nav-item active" data-page="dashboard">🏠 Dashboard</div>
-            <div class="nav-item" data-page="acessos">🚪 Controlo de Acessos</div>
+            <div class="nav-item" data-page="acessos">🚪 Controlo Acessos</div>
             <div class="nav-item" data-page="prestadores" id="menuPrestadores">🏢 Prestadores</div>
+            <div class="nav-item" data-page="colaboradores" id="menuColaboradores">👥 Colaboradores</div>
             <div class="nav-item" data-page="documentos" id="menuDocumentos">📄 Validação</div>
-            <div class="nav-item" data-page="historico">📋 Histórico/Filtros</div>
+            <div class="nav-item" data-page="maquinas" id="menuMaquinas">🔧 Máquinas</div>
+            <div class="nav-item" data-page="historico">📋 Histórico</div>
             <div class="nav-item" data-page="interior">👥 No Interior</div>
         </div>
     </aside>
@@ -511,587 +127,175 @@
         <div class="content-body" id="content-body"></div>
     </main>
 </div>
-<div id="modal" class="modal-overlay">
-    <div class="modal-content" id="modal-content"></div>
-</div>
+<div id="modal" class="modal-overlay"><div class="modal-content" id="modal-content"></div></div>
 
 <script>
-    // DADOS COMPLETOS
+    // ==================== DOCUMENTOS ====================
+    const documentosEmpresa = [
+        { id: "E1", nome: "Certidão Permanente", obrigatorio: true, validadeDias: null, observacoes: "Código de acesso à Certidão Permanente (válido/ativo)" },
+        { id: "E2", nome: "Situação Fiscal (AT)", obrigatorio: true, validadeDias: 90, observacoes: "Declaração emitida nos últimos 90 dias" },
+        { id: "E3", nome: "Situação Contributiva (SS)", obrigatorio: true, validadeDias: 90, observacoes: "Declaração emitida nos últimos 90 dias" },
+        { id: "E4", nome: "Alvará / Registo IMPIC", obrigatorio: true, validadeDias: null, observacoes: "Válido e adequado à classe da obra ou serviço" },
+        { id: "E5", nome: "Seguro Responsabilidade Civil", obrigatorio: true, validadeDias: null, observacoes: "Apólice + Comprovativo de pagamento" },
+        { id: "E6", nome: "Seguro Acidentes Trabalho", obrigatorio: true, validadeDias: null, observacoes: "Apólice + Recibo atual + DRI" },
+        { id: "E7", nome: "Avaliação de Riscos (IPAR)", obrigatorio: true, validadeDias: null, observacoes: "Identificação de perigos específica para o local/tarefa" },
+        { id: "E8", nome: "Declaração de Conhecimento", obrigatorio: true, validadeDias: null, observacoes: "Assinada pelo Representante Legal (Anexo II)" },
+        { id: "E9", nome: "Folha de Remunerações (DRI)", obrigatorio: true, validadeDias: null, observacoes: "Documento de Remunerações Individuais - comprova vínculo à empresa" }
+    ];
+    
+    const documentosColaborador = [
+        { id: "C1", nome: "Número de Contribuinte", obrigatorio: true, observacoes: "Número de Identificação Fiscal (NIF) do trabalhador" },
+        { id: "C2", nome: "Documento de Identificação (CC)", obrigatorio: true, observacoes: "Cartão de Cidadão ou Bilhete de Identidade válido" },
+        { id: "C3", nome: "Ficha de Aptidão Médica", obrigatorio: true, observacoes: "Emitida por Médico do Trabalho, dentro da validade" },
+        { id: "C4", nome: "Certificados de Formação SST", obrigatorio: true, observacoes: "Formação Geral (Lei 102/2009) e Específica (se aplicável)" },
+        { id: "C5", nome: "Auto de Entrega de Equipamentos de Proteção Individual (EPI)", obrigatorio: true, observacoes: "Listagem de EPIs assinada pelo trabalhador" },
+        { id: "C6", nome: "Declaração de Conhecimento de Riscos", obrigatorio: true, observacoes: "Declaração de que o trabalhador conhece os riscos da atividade" }
+    ];
+    
+    const documentosMaquina = [
+        { id: "M1", nome: "Declaração CE", obrigatorio: true, observacoes: "Certificado de Conformidade Europeia" },
+        { id: "M2", nome: "Relatório de Inspeção", obrigatorio: true, observacoes: "Inspeção anual obrigatória" },
+        { id: "M3", nome: "Seguro da Máquina", obrigatorio: true, observacoes: "Responsabilidade Civil específica" },
+        { id: "M4", nome: "Certificado de Manobrador", obrigatorio: true, observacoes: "Formação específica para operação" }
+    ];
+    
+    // ==================== DADOS ====================
     let currentUser = 'portaria';
     let currentPage = 'dashboard';
+    let nextId = 100;
     
-    // Prestadores com trabalhadores associados
     let prestadores = [
-        { id: 1, nome: "Manutenção Industrial Lda", nif: "513952608", email: "contato@manutencao.pt", status: "autorizado", 
-          documentos: { seguranca: "valido", alvara: "valido", formacao: "valido" },
-          trabalhadores: ["João Silva", "Carlos Mendes", "António Ferreira"] },
-        { id: 2, nome: "Transportes Expresso", nif: "509059040", email: "logistica@expresso.pt", status: "pendente", 
-          documentos: { seguranca: "pendente", alvara: "valido", formacao: "pendente" },
-          trabalhadores: ["José Santos", "Paulo Rodrigues"] },
-        { id: 3, nome: "Limpeza e Conservação Lda", nif: "506323781", email: "limpeza@conservacao.pt", status: "autorizado", 
-          documentos: { seguranca: "valido", alvara: "valido", formacao: "valido" },
-          trabalhadores: ["Maria Silva", "Ana Costa", "Sofia Martins"] },
-        { id: 4, nome: "Segurança Global", nif: "512345678", email: "seguranca@global.pt", status: "pendente", 
-          documentos: { seguranca: "pendente", alvara: "pendente", formacao: "pendente" },
-          trabalhadores: ["Rui Pereira", "Pedro Alves"] }
+        { id: 1, nome: "Manutenção Industrial Lda", nif: "513952608", email: "contato@manutencao.pt", status: "autorizado", documentos: {}, trabalhadores: ["João Silva", "Carlos Mendes", "António Ferreira"] },
+        { id: 2, nome: "Transportes Expresso", nif: "509059040", email: "logistica@expresso.pt", status: "pendente", documentos: {}, trabalhadores: ["José Santos", "Paulo Rodrigues"] },
+        { id: 3, nome: "Limpeza e Conservação Lda", nif: "506323781", email: "limpeza@conservacao.pt", status: "autorizado", documentos: {}, trabalhadores: ["Maria Silva", "Ana Costa", "Sofia Martins"] },
+        { id: 4, nome: "Segurança Global", nif: "512345678", email: "seguranca@global.pt", status: "pendente", documentos: {}, trabalhadores: ["Rui Pereira", "Pedro Alves"] }
     ];
     
-    // Pessoas no interior
+    let colaboradores = [
+        { id: 1, nome: "João Silva", nifContribuinte: "123456789", empresaId: 1, empresaNome: "Manutenção Industrial Lda", status: "autorizado", documentos: {} },
+        { id: 2, nome: "Carlos Mendes", nifContribuinte: "987654321", empresaId: 1, empresaNome: "Manutenção Industrial Lda", status: "autorizado", documentos: {} },
+        { id: 3, nome: "Maria Silva", nifContribuinte: "456789123", empresaId: 3, empresaNome: "Limpeza e Conservação Lda", status: "autorizado", documentos: {} },
+        { id: 4, nome: "José Santos", nifContribuinte: "789123456", empresaId: 2, empresaNome: "Transportes Expresso", status: "pendente", documentos: {} }
+    ];
+    
+    let maquinas = [
+        { id: 1, nome: "Empilhador E-01", matricula: "EMP-001", empresaId: 1, empresaNome: "Manutenção Industrial Lda", status: "autorizado", documentos: {}, manobradorId: 1, manobradorNome: "João Silva" }
+    ];
+    
     let pessoasNoInterior = [
         { id: 1, nome: "João Silva", empresaId: 1, empresaNome: "Manutenção Industrial Lda", tipo: "prestador", entrada: "08:30", data: new Date().toLocaleDateString('pt-PT'), timestamp: new Date().setHours(8,30,0) },
-        { id: 2, nome: "Maria Silva", empresaId: 3, empresaNome: "Limpeza e Conservação Lda", tipo: "prestador", entrada: "09:15", data: new Date().toLocaleDateString('pt-PT'), timestamp: new Date().setHours(9,15,0) },
-        { id: 3, nome: "Carlos Oliveira", empresaId: null, empresaNome: "-", tipo: "visita", entrada: "10:00", data: new Date().toLocaleDateString('pt-PT'), timestamp: new Date().setHours(10,0,0) }
+        { id: 2, nome: "Maria Silva", empresaId: 3, empresaNome: "Limpeza e Conservação Lda", tipo: "prestador", entrada: "09:15", data: new Date().toLocaleDateString('pt-PT'), timestamp: new Date().setHours(9,15,0) }
     ];
     
-    // Histórico
     let historicoAcessos = [
         { id: 1, nome: "João Silva", empresaNome: "Manutenção Industrial Lda", tipo: "prestador", acao: "entrada", data: new Date().toLocaleDateString('pt-PT'), hora: "08:30", timestamp: new Date().setHours(8,30,0) },
-        { id: 2, nome: "Maria Silva", empresaNome: "Limpeza e Conservação Lda", tipo: "prestador", acao: "entrada", data: new Date().toLocaleDateString('pt-PT'), hora: "09:15", timestamp: new Date().setHours(9,15,0) },
-        { id: 3, nome: "Carlos Oliveira", empresaNome: "-", tipo: "visita", acao: "entrada", data: new Date().toLocaleDateString('pt-PT'), hora: "10:00", timestamp: new Date().setHours(10,0,0) },
-        { id: 4, nome: "João Silva", empresaNome: "Manutenção Industrial Lda", tipo: "prestador", acao: "saida", data: "26/03/2026", hora: "17:30", timestamp: new Date(2026, 2, 26, 17, 30).getTime() },
-        { id: 5, nome: "António Ferreira", empresaNome: "Manutenção Industrial Lda", tipo: "prestador", acao: "entrada", data: "26/03/2026", hora: "08:45", timestamp: new Date(2026, 2, 26, 8, 45).getTime() }
+        { id: 2, nome: "Maria Silva", empresaNome: "Limpeza e Conservação Lda", tipo: "prestador", acao: "entrada", data: new Date().toLocaleDateString('pt-PT'), hora: "09:15", timestamp: new Date().setHours(9,15,0) }
     ];
     
-    let nextId = 100;
     let currentPrestadorSelecionado = null;
     let historicoFiltradoAtual = [];
     let prestadoresFiltradosAtual = [];
-    let documentosFiltradosAtual = [];
-    let interiorFiltradoAtual = [];
     
-    // Função para exportar para Excel (CSV)
-    function exportToExcel(data, filename, columns) {
-        if (!data || data.length === 0) {
-            showToast('Nenhum dado para exportar', 'warning');
-            return;
-        }
-        let csvRows = [];
-        csvRows.push(columns.map(c => `"${c}"`).join(','));
-        
-        data.forEach(row => {
-            const values = columns.map(col => {
-                let val = row[col] !== undefined && row[col] !== null ? row[col] : '';
-                if (typeof val === 'string') val = val.replace(/"/g, '""');
-                return `"${val}"`;
-            });
-            csvRows.push(values.join(','));
+    function inicializarDocumentos() {
+        prestadores.forEach(p => {
+            documentosEmpresa.forEach(doc => { if (!p.documentos[doc.id]) p.documentos[doc.id] = { estado: p.status === "autorizado" ? "valido" : "pendente", validade: "", observacao: doc.observacoes }; });
         });
-        
-        const blob = new Blob(["\uFEFF" + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${filename}_${new Date().toLocaleDateString('pt-PT').replace(/\//g, '-')}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        showToast(`📊 Exportado: ${filename}`, 'success');
+        colaboradores.forEach(c => {
+            documentosColaborador.forEach(doc => { if (!c.documentos[doc.id]) c.documentos[doc.id] = { estado: c.status === "autorizado" ? "valido" : "pendente", validade: "", observacao: doc.observacoes }; });
+        });
+        maquinas.forEach(m => {
+            documentosMaquina.forEach(doc => { if (!m.documentos[doc.id]) m.documentos[doc.id] = { estado: m.status === "autorizado" ? "valido" : "pendente", validade: "", observacao: doc.observacoes }; });
+        });
     }
     
-    function showToast(msg, type = 'info') {
-        let toast = document.createElement('div');
-        toast.className = 'toast-message';
-        toast.style.background = type === 'success' ? '#4a6a3b' : type === 'warning' ? '#f4a261' : '#003d7c';
-        toast.textContent = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
+    function verificarStatusPrestador(p) { let ok = documentosEmpresa.filter(d=>d.obrigatorio).every(d=>p.documentos[d.id]?.estado==="valido"); if(ok && p.status!=="autorizado"){ p.status="autorizado"; showToast(`✅ ${p.nome} AUTORIZADO!`,"success"); } else if(!ok && p.status==="autorizado"){ p.status="pendente"; showToast(`⚠️ ${p.nome} - Documentos inválidos!`,"warning"); } return p.status==="autorizado"; }
+    function verificarStatusColaborador(c) { let p=prestadores.find(p=>p.id===c.empresaId); if(!p||p.status!=="autorizado") return false; let ok=documentosColaborador.filter(d=>d.obrigatorio).every(d=>c.documentos[d.id]?.estado==="valido"); if(ok && c.status!=="autorizado") c.status="autorizado"; else if(!ok && c.status==="autorizado") c.status="pendente"; return c.status==="autorizado" && p.status==="autorizado"; }
+    function verificarStatusMaquina(m) { let p=prestadores.find(p=>p.id===m.empresaId); if(!p||p.status!=="autorizado") return false; let ok=documentosMaquina.filter(d=>d.obrigatorio).every(d=>m.documentos[d.id]?.estado==="valido"); if(ok && m.status!=="autorizado") m.status="autorizado"; else if(!ok && m.status==="autorizado") m.status="pendente"; if(m.manobradorId){ let man=colaboradores.find(c=>c.id===m.manobradorId); if(!man||man.status!=="autorizado") return false; } return m.status==="autorizado" && p.status==="autorizado"; }
     
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
+    function showToast(msg,type='info'){ let t=document.createElement('div'); t.className='toast-message'; t.style.background=type==='success'?'#4a6a3b':type==='warning'?'#f4a261':'#003d7c'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+    function closeModal(){ document.getElementById('modal').style.display='none'; }
+    function showModal(content){ let modal=document.getElementById('modal'), mc=document.getElementById('modal-content'); mc.innerHTML=content+'<div style="margin-top:1rem; text-align:right;"><button class="btn btn-secondary" onclick="closeModal()">Fechar</button></div>'; modal.style.display='flex'; }
+    function exportToExcel(data,filename,cols){ if(!data||!data.length){ showToast('Nenhum dado para exportar','warning'); return; } let rows=[cols.map(c=>`"${c}"`).join(',')]; data.forEach(r=>{ rows.push(cols.map(c=>{ let v=r[c]!==undefined&&r[c]!==null?r[c]:''; if(typeof v==='string') v=v.replace(/"/g,'""'); return `"${v}"`; }).join(',')); }); let blob=new Blob(["\uFEFF"+rows.join('\n')],{type:'text/csv;charset=utf-8;'}); let a=document.createElement('a'); let url=URL.createObjectURL(blob); a.href=url; a.download=`${filename}_${new Date().toLocaleDateString('pt-PT').replace(/\//g,'-')}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); showToast(`📊 Exportado: ${filename}`,'success'); }
     
-    function showModal(content) {
-        let modal = document.getElementById('modal');
-        let mc = document.getElementById('modal-content');
-        mc.innerHTML = content + '<div style="margin-top:1rem; text-align:right;"><button class="btn btn-secondary" onclick="closeModal()">Fechar</button></div>';
-        modal.style.display = 'flex';
-    }
-    
-    function verificarAutorizacao(prestador) {
-        let ok = prestador.documentos.seguranca === 'valido' && prestador.documentos.alvara === 'valido' && prestador.documentos.formacao === 'valido';
-        if (ok && prestador.status !== 'autorizado') {
-            prestador.status = 'autorizado';
-            showToast('✅ ' + prestador.nome + ' AUTORIZADO!', 'success');
-        } else if (!ok && prestador.status === 'autorizado') {
-            prestador.status = 'pendente';
-            showToast('⚠️ ' + prestador.nome + ' perdeu autorização', 'warning');
-        }
-        return ok;
-    }
-    
-    function registrarEntrada(tipo, prestadorId, nomePessoa, transportadoraNome) {
-        if (tipo === 'prestador') {
-            let prestador = prestadores.find(p => p.id === prestadorId);
-            if (!prestador) return false;
-            if (prestador.status !== 'autorizado') {
-                showToast('❌ ACESSO NEGADO! ' + prestador.nome + ' não autorizado.', 'warning');
-                return false;
-            }
-            let now = new Date();
-            let pessoa = {
-                id: nextId++, nome: nomePessoa, empresaId: prestadorId, empresaNome: prestador.nome, tipo: "prestador",
-                entrada: now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
-                data: now.toLocaleDateString('pt-PT'), timestamp: now.getTime()
-            };
+    function registrarEntrada(tipo,prestadorId,nomePessoa,transpNome,empresaVisita,forcar=false){
+        if(tipo==='prestador'){
+            let p=prestadores.find(p=>p.id===prestadorId);
+            if(!p) return false;
+            if(p.status!=='autorizado' && !forcar){ showToast(`❌ ACESSO NEGADO! ${p.nome} - Documentação não validada.`,'warning'); return false; }
+            let now=new Date(); let pessoa={id:nextId++,nome:nomePessoa,empresaId:prestadorId,empresaNome:p.nome,tipo:"prestador",entrada:now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}),data:now.toLocaleDateString('pt-PT'),timestamp:now.getTime(),forcar:forcar};
             pessoasNoInterior.push(pessoa);
-            historicoAcessos.unshift({
-                id: nextId++, nome: nomePessoa, empresaNome: prestador.nome, tipo: "prestador", acao: "entrada",
-                data: pessoa.data, hora: pessoa.entrada, timestamp: now.getTime()
-            });
-            showToast('✅ Entrada: ' + nomePessoa + ' (' + prestador.nome + ')', 'success');
-        } else if (tipo === 'visita') {
-            let now = new Date();
-            let pessoa = {
-                id: nextId++, nome: nomePessoa, empresaId: null, empresaNome: "-", tipo: "visita",
-                entrada: now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
-                data: now.toLocaleDateString('pt-PT'), timestamp: now.getTime()
-            };
-            pessoasNoInterior.push(pessoa);
-            historicoAcessos.unshift({
-                id: nextId++, nome: nomePessoa, empresaNome: "-", tipo: "visita", acao: "entrada",
-                data: pessoa.data, hora: pessoa.entrada, timestamp: now.getTime()
-            });
-            showToast('✅ Visita: ' + nomePessoa, 'success');
-        } else if (tipo === 'transportista') {
-            let now = new Date();
-            let pessoa = {
-                id: nextId++, nome: nomePessoa, empresaId: null, empresaNome: transportadoraNome || "Transportadora", tipo: "transportista",
-                entrada: now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
-                data: now.toLocaleDateString('pt-PT'), timestamp: now.getTime()
-            };
-            pessoasNoInterior.push(pessoa);
-            historicoAcessos.unshift({
-                id: nextId++, nome: nomePessoa, empresaNome: transportadoraNome || "Transportadora", tipo: "transportista", acao: "entrada",
-                data: pessoa.data, hora: pessoa.entrada, timestamp: now.getTime()
-            });
-            showToast('✅ Transportista: ' + nomePessoa, 'success');
+            historicoAcessos.unshift({id:nextId++,nome:nomePessoa,empresaNome:p.nome,tipo:"prestador",acao:"entrada",data:pessoa.data,hora:pessoa.entrada,timestamp:now.getTime(),observacao:forcar?'ACESSO FORÇADO':''});
+            showToast((forcar?'⚠️ ACESSO FORÇADO: ':'✅ Entrada: ')+nomePessoa+' ('+p.nome+')',forcar?'warning':'success');
+        } else if(tipo==='visita'){
+            let now=new Date(); let pessoa={id:nextId++,nome:nomePessoa,empresaId:null,empresaNome:empresaVisita||"-",tipo:"visita",entrada:now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}),data:now.toLocaleDateString('pt-PT'),timestamp:now.getTime()};
+            pessoasNoInterior.push(pessoa); historicoAcessos.unshift({id:nextId++,nome:nomePessoa,empresaNome:empresaVisita||"-",tipo:"visita",acao:"entrada",data:pessoa.data,hora:pessoa.entrada,timestamp:now.getTime()});
+            showToast(`✅ Visita: ${nomePessoa}`+(empresaVisita?` (${empresaVisita})`:''),'success');
+        } else if(tipo==='transportista'){
+            let now=new Date(); let pessoa={id:nextId++,nome:nomePessoa,empresaId:null,empresaNome:transpNome||"Transportadora",tipo:"transportista",entrada:now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}),data:now.toLocaleDateString('pt-PT'),timestamp:now.getTime()};
+            pessoasNoInterior.push(pessoa); historicoAcessos.unshift({id:nextId++,nome:nomePessoa,empresaNome:transpNome||"Transportadora",tipo:"transportista",acao:"entrada",data:pessoa.data,hora:pessoa.entrada,timestamp:now.getTime()});
+            showToast(`✅ Transportista: ${nomePessoa}`,'success');
         }
         return true;
     }
     
-    function registrarSaida(pessoaId) {
-        let pessoa = pessoasNoInterior.find(p => p.id === pessoaId);
-        if (!pessoa) return;
-        let now = new Date();
-        historicoAcessos.unshift({
-            id: nextId++, nome: pessoa.nome, empresaNome: pessoa.empresaNome, tipo: pessoa.tipo, acao: "saida",
-            data: now.toLocaleDateString('pt-PT'),
-            hora: now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
-            timestamp: now.getTime()
-        });
-        pessoasNoInterior = pessoasNoInterior.filter(p => p.id !== pessoaId);
-        showToast('🚪 Saída: ' + pessoa.nome, 'success');
-        renderPage(currentPage);
-    }
+    function registrarSaida(pessoaId){ let p=pessoasNoInterior.find(p=>p.id===pessoaId); if(!p) return; let now=new Date(); historicoAcessos.unshift({id:nextId++,nome:p.nome,empresaNome:p.empresaNome,tipo:p.tipo,acao:"saida",data:now.toLocaleDateString('pt-PT'),hora:now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}),timestamp:now.getTime()}); pessoasNoInterior=pessoasNoInterior.filter(p=>p.id!==pessoaId); showToast(`🚪 Saída: ${p.nome}`,'success'); renderPage(currentPage); }
+    function forcarAcesso(prestadorId,nomeTrabalhador){ let p=prestadores.find(p=>p.id===prestadorId); showModal(`<h3>⚠️ Forçar Acesso</h3><p><strong>Prestador:</strong> ${p.nome}</p><p><strong>Status:</strong> ${p.status==='autorizado'?'Autorizado':'Pendente/Negado'}</p><div class="form-group"><label>Nome do Trabalhador</label><input type="text" id="forcarNome" value="${nomeTrabalhador}"></div><div class="form-group"><label>Motivo</label><input type="text" id="forcarMotivo" placeholder="Ex: Urgência"></div><button class="btn btn-warning" onclick="confirmarForcarAcesso(${prestadorId})">⚠️ Confirmar</button>`); }
+    window.confirmarForcarAcesso=function(id){ let nome=document.getElementById('forcarNome')?.value; let motivo=document.getElementById('forcarMotivo')?.value; if(!nome){ showToast('Informe o nome','warning'); return; } registrarEntrada('prestador',id,nome,'','',true); showToast(`⚠️ ACESSO FORÇADO! Motivo: ${motivo||'Não informado'}`,'warning'); closeModal(); renderPage('acessos'); };
     
-    // FUNÇÕES DE PESQUISA
-    window.filterPrestadores = function() {
-        let search = document.getElementById('prestadorSearch')?.value?.toLowerCase() || '';
-        let results = prestadores.filter(p => p.nome.toLowerCase().includes(search));
-        let div = document.getElementById('prestadorResults');
-        if (search && results.length) {
-            div.innerHTML = results.map(p => '<div onclick="selectPrestador(' + p.id + ', \'' + p.nome.replace(/'/g, "\\'") + '\')">' + p.nome + ' - ' + (p.status === 'autorizado' ? '✅ Autorizado' : '⏳ Pendente') + '</div>').join('');
-            div.style.display = 'block';
-        } else {
-            div.style.display = 'none';
-        }
-    };
+    window.filterPrestadores=function(){ let s=document.getElementById('prestadorSearch')?.value?.toLowerCase()||''; let r=prestadores.filter(p=>p.nome.toLowerCase().includes(s)); let d=document.getElementById('prestadorResults'); if(s&&r.length){ d.innerHTML=r.map(p=>`<div onclick="selectPrestador(${p.id},'${p.nome.replace(/'/g,"\\'")}')">${p.nome} - ${p.status==='autorizado'?'✅ Autorizado':'⏳ Pendente'}</div>`).join(''); d.style.display='block'; } else d.style.display='none'; };
+    window.selectPrestador=function(id,nome){ document.getElementById('prestadorSearch').value=nome; currentPrestadorSelecionado=prestadores.find(p=>p.id===id); let p=currentPrestadorSelecionado; let statusHtml=p.status==='autorizado'?'<span class="badge badge-success">AUTORIZADO</span>':'<span class="badge badge-danger">NEGADO/PENDENTE</span>'; document.getElementById('selectedPrestadorId').value=id; document.getElementById('selectedPrestadorInfo').innerHTML=`<strong>${p.nome}</strong><br>Status: ${statusHtml}<br>Trabalhadores: ${p.trabalhadores.join(', ')}`; document.getElementById('prestadorResults').style.display='none'; document.getElementById('trabalhadorSearch').disabled=false; document.getElementById('trabalhadorSearch').value=''; document.getElementById('selectedTrabalhador').value=''; let b=`<div style="margin-top:0.5rem;"><button class="btn-success btn-sm" onclick="confirmarEntradaPrestador()">✅ Registrar Entrada</button>`; if(p.status!=='autorizado') b+=`<button class="btn-warning btn-sm" style="margin-left:0.5rem;" onclick="forcarAcesso(${p.id}, document.getElementById('trabalhadorSearch').value)">⚠️ Forçar Acesso</button>`; b+=`</div>`; document.getElementById('selectedPrestadorInfo').innerHTML+=b; window.filterTrabalhadores(); };
+    window.filterTrabalhadores=function(){ let p=currentPrestadorSelecionado; if(!p) return; let s=document.getElementById('trabalhadorSearch')?.value?.toLowerCase()||''; let r=p.trabalhadores.filter(t=>t.toLowerCase().includes(s)); let d=document.getElementById('trabalhadorResults'); if(s&&r.length){ d.innerHTML=r.map(t=>`<div onclick="selectTrabalhador('${t.replace(/'/g,"\\'")}')">${t}</div>`).join(''); d.style.display='block'; } else d.style.display='none'; };
+    window.selectTrabalhador=function(n){ document.getElementById('trabalhadorSearch').value=n; document.getElementById('selectedTrabalhador').value=n; document.getElementById('trabalhadorResults').style.display='none'; };
+    window.confirmarEntradaPrestador=function(){ let pid=document.getElementById('selectedPrestadorId').value; let trab=document.getElementById('selectedTrabalhador').value; if(!pid||!trab){ showToast('Selecione prestador e trabalhador','warning'); return; } registrarEntrada('prestador',parseInt(pid),trab,'','',false); renderPage('acessos'); };
+    window.toggleAcessoFields=function(){ let t=document.getElementById('acessoTipo').value; document.getElementById('prestadorSection').style.display=t==='prestador'?'block':'none'; document.getElementById('visitaSection').style.display=t==='visita'?'block':'none'; document.getElementById('transportistaSection').style.display=t==='transportista'?'block':'none'; };
+    window.confirmarEntradaVisita=function(){ let n=document.getElementById('visitaNome')?.value; let e=document.getElementById('visitaEmpresa')?.value; if(!n){ showToast('Informe nome da visita','warning'); return; } registrarEntrada('visita',null,n,'',e,false); renderPage('acessos'); };
+    window.confirmarEntradaTransportista=function(){ let m=document.getElementById('motoristaNome')?.value; let t=document.getElementById('transportadoraNome')?.value; if(!m){ showToast('Informe nome do motorista','warning'); return; } registrarEntrada('transportista',null,m,t,'',false); renderPage('acessos'); };
     
-    window.selectPrestador = function(id, nome) {
-        document.getElementById('prestadorSearch').value = nome;
-        currentPrestadorSelecionado = prestadores.find(p => p.id === id);
-        let prestador = currentPrestadorSelecionado;
-        document.getElementById('selectedPrestadorId').value = id;
-        document.getElementById('selectedPrestadorInfo').innerHTML = '<strong>' + prestador.nome + '</strong><br>Status: ' + (prestador.status === 'autorizado' ? '✅ AUTORIZADO' : '⏳ PENDENTE') + '<br>Trabalhadores disponíveis: ' + prestador.trabalhadores.join(', ');
-        document.getElementById('prestadorResults').style.display = 'none';
-        document.getElementById('trabalhadorSearch').disabled = false;
-        document.getElementById('trabalhadorSearch').value = '';
-        document.getElementById('selectedTrabalhador').value = '';
-        filterTrabalhadores();
-    };
+    function renderDashboard(){ let hoje=new Date().toLocaleDateString('pt-PT'); let entradasHoje=historicoAcessos.filter(h=>h.acao==='entrada'&&h.data===hoje).length; let prestAutorizados=prestadores.filter(p=>p.status==='autorizado').length; let prestPendentes=prestadores.length-prestAutorizados; let colabAutorizados=colaboradores.filter(c=>c.status==='autorizado').length; let colabPendentes=colaboradores.length-colabAutorizados; return `<div class="stats-grid"><div class="stat-card"><div class="stat-number">${prestadores.length}</div><div>Prestadores</div></div><div class="stat-card"><div class="stat-number">${prestAutorizados}</div><div>Autorizados</div><small style="color:#dc3545;">${prestPendentes} pendentes</small></div><div class="stat-card"><div class="stat-number">${colaboradores.length}</div><div>Colaboradores</div><small style="color:#dc3545;">${colabPendentes} pendentes</small></div><div class="stat-card"><div class="stat-number">${pessoasNoInterior.length}</div><div>No Interior</div></div><div class="stat-card"><div class="stat-number">${entradasHoje}</div><div>Entradas Hoje</div></div></div><div class="alert alert-info"><strong>📌 Regras de Bloqueio:</strong> Se a EMPRESA estiver com documentação inválida, TODOS os seus colaboradores e máquinas ficam impedidos de aceder.</div><div class="card"><div class="card-title">👥 Pessoas no Interior</div>${pessoasNoInterior.length===0?'<div class="alert alert-info">Nenhuma pessoa</div>':'<div class="table-wrapper"><table class="table"><thead><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th></thead><tbody>'+pessoasNoInterior.map(p=>`<tr><td>${p.nome}</td><td>${p.empresaNome}</td><td><span class="badge ${p.tipo==='prestador'?'badge-success':p.tipo==='visita'?'badge-info':'badge-warning'}">${p.tipo==='prestador'?'Prestador':p.tipo==='visita'?'Visita':'Transportista'}</span></td><td>${p.entrada}</td></tr>`).join('')+'</tbody></table></div>'}</div><div class="card"><div class="card-title">📋 Últimos Acessos</div><div class="table-wrapper"><table class="table"><thead><th>Data/Hora</th><th>Nome</th><th>Empresa</th><th>Ação</th></thead><tbody>'+historicoAcessos.slice(0,5).map(h=>`<tr><td>${h.data} ${h.hora}</td><td>${h.nome}</td><td>${h.empresaNome}</td><td><span class="badge ${h.acao==='entrada'?'badge-success':'badge-warning'}">${h.acao}</span></td></tr>`).join('')+'</tbody></table></div></div>`; }
     
-    window.filterTrabalhadores = function() {
-        let prestador = currentPrestadorSelecionado;
-        if (!prestador) return;
-        let search = document.getElementById('trabalhadorSearch')?.value?.toLowerCase() || '';
-        let results = prestador.trabalhadores.filter(t => t.toLowerCase().includes(search));
-        let div = document.getElementById('trabalhadorResults');
-        if (search && results.length) {
-            div.innerHTML = results.map(t => '<div onclick="selectTrabalhador(\'' + t.replace(/'/g, "\\'") + '\')">' + t + '</div>').join('');
-            div.style.display = 'block';
-        } else {
-            div.style.display = 'none';
-        }
-    };
+    function renderAcessos(){ let isVisualizador=currentUser==='visualizador'; let interiorHtml=`<div class="table-wrapper"><table class="table"><thead><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th>${isVisualizador?'':'<th>Ação</th>'}</thead><tbody>${pessoasNoInterior.map(p=>`<tr><td>${p.nome}</td><td>${p.empresaNome}</td><td><span class="badge ${p.tipo==='prestador'?'badge-success':p.tipo==='visita'?'badge-info':'badge-warning'}">${p.tipo==='prestador'?'Prestador':p.tipo==='visita'?'Visita':'Transportista'}</span></td><td>${p.entrada}</td>${isVisualizador?'':`<td><button class="btn-warning btn-sm" onclick="registrarSaida(${p.id})">Saída</button></td>`}</tr>`).join('')}</tbody></table></div>`; return `<div class="card"><div class="card-title">🚪 Registar Acesso</div><div class="form-group"><label>Tipo de Acesso *</label><select id="acessoTipo" onchange="toggleAcessoFields()" ${isVisualizador?'disabled':''}><option value="prestador">Prestador de Serviço</option><option value="visita">Visita</option><option value="transportista">Transportista</option></select></div><div id="prestadorSection"><div class="form-group"><label>Prestador de Serviço *</label><div class="search-box"><input type="text" id="prestadorSearch" placeholder="🔍 Pesquisar prestador..." onkeyup="filterPrestadores()" autocomplete="off" ${isVisualizador?'disabled':''}><div id="prestadorResults" class="search-results"></div></div><input type="hidden" id="selectedPrestadorId"><div id="selectedPrestadorInfo" class="alert alert-info" style="margin-top:0.5rem; padding:0.5rem;"></div></div><div class="form-group"><label>Trabalhador *</label><div class="search-box"><input type="text" id="trabalhadorSearch" placeholder="🔍 Pesquisar trabalhador..." onkeyup="filterTrabalhadores()" autocomplete="off" disabled><div id="trabalhadorResults" class="search-results"></div></div><input type="hidden" id="selectedTrabalhador"></div></div><div id="visitaSection" style="display:none;"><div class="form-group"><label>Nome da Visita *</label><input type="text" id="visitaNome" placeholder="Nome completo" ${isVisualizador?'disabled':''}></div><div class="form-group"><label>Empresa (se aplicável)</label><input type="text" id="visitaEmpresa" placeholder="Nome da empresa" ${isVisualizador?'disabled':''}></div>${isVisualizador?'':`<button class="btn btn-success" onclick="confirmarEntradaVisita()">✅ Registrar Visita</button>`}</div><div id="transportistaSection" style="display:none;"><div class="form-group"><label>Transportadora</label><input type="text" id="transportadoraNome" placeholder="Nome da transportadora" ${isVisualizador?'disabled':''}></div><div class="form-group"><label>Nome do Motorista *</label><input type="text" id="motoristaNome" placeholder="Nome do motorista" ${isVisualizador?'disabled':''}></div>${isVisualizador?'':`<button class="btn btn-success" onclick="confirmarEntradaTransportista()">✅ Registrar Transportista</button>`}</div></div><div class="card"><div class="card-title">👥 Pessoas no Interior<button class="btn-excel btn-sm" onclick="exportToExcel(pessoasNoInterior,'Pessoas_No_Interior',['nome','empresaNome','tipo','entrada','data'])">📊 Excel</button></div>${pessoasNoInterior.length===0?'<div class="alert alert-info">Nenhuma pessoa</div>':interiorHtml}</div>`; }
     
-    window.selectTrabalhador = function(nome) {
-        document.getElementById('trabalhadorSearch').value = nome;
-        document.getElementById('selectedTrabalhador').value = nome;
-        document.getElementById('trabalhadorResults').style.display = 'none';
-    };
+    function renderPrestadores(){ let isVisualizador=currentUser==='visualizador'; return `<div class="card"><div class="card-title">🏢 Prestadores de Serviço<button class="btn-excel btn-sm" onclick="exportToExcel(prestadores,'Prestadores',['nome','nif','email','status'])">📊 Excel</button></div><div class="form-group"><input type="text" id="filtroPrestador" placeholder="🔍 Filtrar por nome/NIF..." class="filter-input" style="width:100%;" onkeyup="filtrarPrestadoresLista()"></div><div id="prestadoresLista"></div></div>${!isVisualizador?`<div class="card"><div class="card-title">➕ Novo Prestador</div><div class="form-group"><label>NIF *</label><input type="text" id="novoNif" placeholder="123456789"></div><div class="form-group"><label>Nome *</label><input type="text" id="novoNome" placeholder="Nome da empresa"></div><div class="form-group"><label>Email *</label><input type="email" id="novoEmail" placeholder="contato@empresa.pt"></div><div class="form-group"><label>Trabalhadores (separados por vírgula)</label><input type="text" id="novoTrabalhadores" placeholder="João Silva, Maria Santos"></div><button class="btn btn-success" onclick="criarPrestador()">Registrar Prestador</button></div>`:''}`; }
+    window.filtrarPrestadoresLista=function(){ let s=document.getElementById('filtroPrestador')?.value?.toLowerCase()||''; let f=prestadores.filter(p=>p.nome.toLowerCase().includes(s)||p.nif.includes(s)); prestadoresFiltradosAtual=f; let isVis=currentUser==='visualizador'; document.getElementById('prestadoresLista').innerHTML=`<div class="table-wrapper"><table class="table"><thead><th>Empresa</th><th>NIF</th><th>Email</th><th>Trabalhadores</th><th>Status</th>${isVis?'':'<th>Ações</th>'}</thead><tbody>${f.map(p=>`<tr><td>${p.nome}</td><td>${p.nif}</td><td>${p.email}</td><td>${p.trabalhadores.join(', ')}</td><td><span class="badge ${p.status==='autorizado'?'badge-success':'badge-warning'}">${p.status==='autorizado'?'Autorizado':'Pendente'}</span></td>${isVis?'':`<td><button class="btn-secondary btn-sm" onclick="abrirValidacaoPrestador(${p.id})">Validar Docs</button></td>`}</tr>`).join('')}</tbody></table></div>`; };
     
-    window.toggleAcessoFields = function() {
-        let tipo = document.getElementById('acessoTipo').value;
-        document.getElementById('prestadorSection').style.display = tipo === 'prestador' ? 'block' : 'none';
-        document.getElementById('visitaSection').style.display = tipo === 'visita' ? 'block' : 'none';
-        document.getElementById('transportistaSection').style.display = tipo === 'transportista' ? 'block' : 'none';
-    };
+    function renderColaboradores(){ let isVisualizador=currentUser==='visualizador'; return `<div class="card"><div class="card-title">👥 Colaboradores<button class="btn-excel btn-sm" onclick="exportToExcel(colaboradores,'Colaboradores',['nome','nifContribuinte','empresaNome','status'])">📊 Excel</button></div><div class="form-group"><input type="text" id="filtroColab" placeholder="🔍 Filtrar por nome..." class="filter-input" style="width:100%;" onkeyup="filtrarColaboradoresLista()"></div><div id="colaboradoresLista"></div></div>${!isVisualizador?`<div class="card"><div class="card-title">➕ Novo Colaborador</div><div class="form-group"><label>Nome *</label><input type="text" id="novoColabNome" placeholder="Nome completo"></div><div class="form-group"><label>Número de Contribuinte *</label><input type="text" id="novoColabNif" placeholder="NIF do trabalhador"></div><div class="form-group"><label>Prestador *</label><select id="novoColabPrestador">${prestadores.map(p=>`<option value="${p.id}">${p.nome}</option>`).join('')}</select></div><button class="btn btn-success" onclick="criarColaborador()">Registrar Colaborador</button></div>`:''}`; }
+    window.filtrarColaboradoresLista=function(){ let s=document.getElementById('filtroColab')?.value?.toLowerCase()||''; let f=colaboradores.filter(c=>c.nome.toLowerCase().includes(s)); let isVis=currentUser==='visualizador'; document.getElementById('colaboradoresLista').innerHTML=`<div class="table-wrapper"><table class="table"><thead><th>Nome</th><th>Nº Contribuinte</th><th>Prestador</th><th>Status</th>${isVis?'':'<th>Ações</th>'}</thead><tbody>${f.map(c=>`<tr><td>${c.nome}</td><td>${c.nifContribuinte}</td><td>${c.empresaNome}</td><td><span class="badge ${c.status==='autorizado'?'badge-success':'badge-warning'}">${c.status==='autorizado'?'Autorizado':'Pendente'}</span></td>${isVis?'':`<td><button class="btn-secondary btn-sm" onclick="abrirValidacaoColaborador(${c.id})">Validar Docs</button></td>`}</tr>`).join('')}</tbody></table></div>`; };
     
-    window.confirmarEntrada = function() {
-        let tipo = document.getElementById('acessoTipo').value;
-        if (tipo === 'prestador') {
-            let prestadorId = document.getElementById('selectedPrestadorId').value;
-            let trabalhador = document.getElementById('selectedTrabalhador').value;
-            if (!prestadorId || !trabalhador) {
-                showToast('Selecione prestador e trabalhador', 'warning');
-                return;
-            }
-            registrarEntrada('prestador', parseInt(prestadorId), trabalhador, '');
-        } else if (tipo === 'visita') {
-            let nome = document.getElementById('visitaNome')?.value;
-            if (!nome) {
-                showToast('Informe nome da visita', 'warning');
-                return;
-            }
-            registrarEntrada('visita', null, nome, '');
-        } else if (tipo === 'transportista') {
-            let motorista = document.getElementById('motoristaNome')?.value;
-            let transportadora = document.getElementById('transportadoraNome')?.value;
-            if (!motorista) {
-                showToast('Informe nome do motorista', 'warning');
-                return;
-            }
-            registrarEntrada('transportista', null, motorista, transportadora);
-        }
-        renderPage(currentPage);
-    };
+    function renderDocumentos(){ return `<div class="card"><div class="card-title">📄 Validação Documental</div><div class="alert alert-info"><strong>Legenda:</strong> ✅ Válido | ⏳ Pendente | ❌ Inválido<br>📌 Documentos com <span class="badge badge-danger">Obrig.</span> são obrigatórios para autorização.</div><div class="form-group"><input type="text" id="filtroDoc" placeholder="🔍 Filtrar por Prestador..." class="filter-input" style="width:100%;" onkeyup="filtrarDocumentos()"></div><div id="documentosLista"></div></div>`; }
+    window.filtrarDocumentos=function(){ let s=document.getElementById('filtroDoc')?.value?.toLowerCase()||''; let f=prestadores.filter(p=>p.nome.toLowerCase().includes(s)); document.getElementById('documentosLista').innerHTML=gerarTabelaDocumentos(f); };
+    function gerarTabelaDocumentos(lista){ let isVis=currentUser==='visualizador'; let html=`<div class="table-wrapper"><table class="table"><thead><th>Prestador</th>`; documentosEmpresa.forEach(d=>{ html+=`<th><span class="tooltip" title="${d.observacoes}">${d.nome.substring(0,18)}...<br><span class="badge badge-danger">Obrig.</span></span></th>`; }); html+=`<th>Status</th>${isVis?'':'<th>Ações</th>'}</thead><tbody>`; lista.forEach(p=>{ let todosValidos=documentosEmpresa.filter(d=>d.obrigatorio).every(d=>p.documentos[d.id]?.estado==='valido'); html+=`<tr><td><strong>${p.nome}</strong></td>`; documentosEmpresa.forEach(d=>{ let estado=p.documentos[d.id]?.estado||'pendente'; let cls=estado==='valido'?'badge-success':estado==='invalido'?'badge-danger':'badge-warning'; let txt=estado==='valido'?'✅ Válido':estado==='invalido'?'❌ Inválido':'⏳ Pendente'; html+=`<td style="text-align:center;"><span class="badge ${cls}">${txt}</span></td>`; }); html+=`<td><span class="badge ${todosValidos?'badge-success':'badge-warning'}">${todosValidos?'Autorizado':'Pendente'}</span></td>${isVis?'':`<td><button class="btn-primary btn-sm" onclick="abrirValidacaoPrestador(${p.id})">Validar</button></td>`}</tr>`; }); html+=`</tbody></table></div>`; return html; }
     
-    // RENDERIZAÇÃO DAS PÁGINAS
-    function renderAcessos() {
-        let prestadoresList = prestadores.map(p => '<option value="' + p.id + '" ' + (p.status !== 'autorizado' ? 'style="color:red"' : '') + '>' + p.nome + ' - ' + (p.status === 'autorizado' ? '✅ AUTORIZADO' : '⏳ PENDENTE') + '</option>').join('');
-        let interiorHtml = '<table class="table"><thead><tr><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th><th>Ação</th></tr></thead><tbody>';
-        pessoasNoInterior.forEach(p => {
-            interiorHtml += '<tr><td>' + p.nome + '</td><td>' + p.empresaNome + '</td><td><span class="badge ' + (p.tipo === 'prestador' ? 'badge-success' : p.tipo === 'visita' ? 'badge-info' : 'badge-warning') + '">' + (p.tipo === 'prestador' ? 'Prestador' : p.tipo === 'visita' ? 'Visita' : 'Transportista') + '</span></td><td>' + p.entrada + '</td><td><button class="btn-warning btn-sm" onclick="registrarSaida(' + p.id + ')">Saída</button></td></tr>';
-        });
-        interiorHtml += '</tbody></table>';
-        
-        return '<div class="card"><div class="card-title">🚪 Registar Acesso</div>' +
-            '<div class="form-group"><label>Tipo de Acesso *</label>' +
-            '<select id="acessoTipo" onchange="toggleAcessoFields()">' +
-            '<option value="prestador">Prestador de Serviço</option>' +
-            '<option value="visita">Visita</option>' +
-            '<option value="transportista">Transportista</option>' +
-            '</select></div>' +
-            '<div id="prestadorSection">' +
-            '<div class="form-group"><label>Prestador de Serviço *</label>' +
-            '<div class="search-box">' +
-            '<input type="text" id="prestadorSearch" placeholder="🔍 Pesquisar prestador..." onkeyup="filterPrestadores()" autocomplete="off">' +
-            '<div id="prestadorResults" class="search-results"></div>' +
-            '</div>' +
-            '<input type="hidden" id="selectedPrestadorId">' +
-            '<div id="selectedPrestadorInfo" class="alert alert-info" style="margin-top:0.5rem; font-size:0.8rem; padding:0.5rem;"></div>' +
-            '</div>' +
-            '<div class="form-group" id="trabalhadorGroup"><label>Trabalhador *</label>' +
-            '<div class="search-box">' +
-            '<input type="text" id="trabalhadorSearch" placeholder="🔍 Pesquisar trabalhador..." onkeyup="filterTrabalhadores()" autocomplete="off" disabled>' +
-            '<div id="trabalhadorResults" class="search-results"></div>' +
-            '</div>' +
-            '<input type="hidden" id="selectedTrabalhador">' +
-            '</div></div>' +
-            '<div id="visitaSection" style="display:none;">' +
-            '<div class="form-group"><label>Nome da Visita *</label><input type="text" id="visitaNome" placeholder="Nome completo"></div></div>' +
-            '<div id="transportistaSection" style="display:none;">' +
-            '<div class="form-group"><label>Transportadora</label><input type="text" id="transportadoraNome" placeholder="Nome da transportadora"></div>' +
-            '<div class="form-group"><label>Nome do Motorista *</label><input type="text" id="motoristaNome" placeholder="Nome do motorista"></div></div>' +
-            '<button class="btn btn-success" onclick="confirmarEntrada()" style="margin-top:0.5rem;">✅ Registrar Entrada</button></div>' +
-            '<div class="card"><div class="card-title">👥 Pessoas no Interior<button class="btn-excel btn-sm" style="margin-left:1rem;" onclick="exportToExcel(pessoasNoInterior, \'Pessoas_No_Interior\', [\'nome\',\'empresaNome\',\'tipo\',\'entrada\',\'data\'])">📊 Exportar Excel</button></div>' +
-            (pessoasNoInterior.length === 0 ? '<div class="alert alert-info">Nenhuma pessoa no interior</div>' : interiorHtml) + '</div>';
-    }
+    function renderMaquinas(){ let isVis=currentUser==='visualizador'; return `<div class="card"><div class="card-title">🔧 Máquinas<button class="btn-excel btn-sm" onclick="exportToExcel(maquinas,'Maquinas',['nome','matricula','empresaNome','manobradorNome','status'])">📊 Excel</button></div><div class="form-group"><input type="text" id="filtroMaquina" placeholder="🔍 Filtrar..." class="filter-input" style="width:100%;" onkeyup="filtrarMaquinas()"></div><div id="maquinasLista"></div></div>${!isVis?`<div class="card"><div class="card-title">➕ Nova Máquina</div><div class="form-group"><label>Nome *</label><input type="text" id="novaMaquinaNome" placeholder="Ex: Empilhador"></div><div class="form-group"><label>Matrícula *</label><input type="text" id="novaMaquinaMatricula" placeholder="Identificação"></div><div class="form-group"><label>Prestador *</label><select id="novaMaquinaPrestador">${prestadores.map(p=>`<option value="${p.id}">${p.nome}</option>`).join('')}</select></div><div class="form-group"><label>Manobrador</label><select id="novaMaquinaManobrador"><option value="">Selecionar...</option>${colaboradores.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select></div><button class="btn btn-success" onclick="criarMaquina()">Registrar</button></div>`:''}`; }
+    window.filtrarMaquinas=function(){ let s=document.getElementById('filtroMaquina')?.value?.toLowerCase()||''; let f=maquinas.filter(m=>m.nome.toLowerCase().includes(s)||m.matricula.toLowerCase().includes(s)); let isVis=currentUser==='visualizador'; document.getElementById('maquinasLista').innerHTML=`<div class="table-wrapper"><table class="table"><thead><th>Máquina</th><th>Matrícula</th><th>Prestador</th><th>Manobrador</th><th>Status</th>${isVis?'':'<th>Ações</th>'}</thead><tbody>${f.map(m=>`<tr><td>${m.nome}</td><td>${m.matricula}</td><td>${m.empresaNome}</td><td>${m.manobradorNome||'-'}</td><td><span class="badge ${m.status==='autorizado'?'badge-success':'badge-warning'}">${m.status==='autorizado'?'Autorizada':'Pendente'}</span></td>${isVis?'':`<td><button class="btn-secondary btn-sm" onclick="abrirValidacaoMaquina(${m.id})">Validar</button></td>`}</tr>`).join('')}</tbody></table></div>`; };
     
-    function renderHistorico() {
-        return '<div class="card"><div class="card-title">📋 Histórico de Acessos<button class="btn-excel btn-sm" style="margin-left:1rem;" onclick="exportarHistoricoFiltrado()">📊 Exportar Excel</button></div>' +
-            '<div class="filter-group" style="margin-bottom:1rem; flex-wrap:wrap;">' +
-            '<input type="date" id="filtroDataInicio" class="filter-input" placeholder="Data Início">' +
-            '<input type="date" id="filtroDataFim" class="filter-input" placeholder="Data Fim">' +
-            '<select id="filtroTipo" class="filter-input"><option value="">Todos os tipos</option><option value="prestador">Prestador</option><option value="visita">Visita</option><option value="transportista">Transportista</option></select>' +
-            '<select id="filtroAcao" class="filter-input"><option value="">Todas ações</option><option value="entrada">Entrada</option><option value="saida">Saída</option></select>' +
-            '<input type="text" id="filtroNome" class="filter-input" placeholder="🔍 Nome/empresa..." style="min-width:200px;">' +
-            '<button class="btn-primary btn-sm" onclick="aplicarFiltrosHistorico()">Filtrar</button>' +
-            '<button class="btn-secondary btn-sm" onclick="limparFiltrosHistorico()">Limpar</button></div>' +
-            '<div id="historicoLista"></div></div>';
-    }
+    function renderHistorico(){ return `<div class="card"><div class="card-title">📋 Histórico de Acessos<button class="btn-excel btn-sm" onclick="exportToExcel(historicoAcessos,'Historico_Acessos',['data','hora','nome','empresaNome','tipo','acao','observacao'])">📊 Excel</button></div><div class="filter-group"><input type="date" id="filtroDataInicio"><input type="date" id="filtroDataFim"><select id="filtroTipo"><option value="">Todos</option><option value="prestador">Prestador</option><option value="visita">Visita</option><option value="transportista">Transportista</option></select><input type="text" id="filtroNome" placeholder="🔍 Nome/empresa"><button class="btn-primary btn-sm" onclick="aplicarFiltros()">Filtrar</button><button class="btn-secondary btn-sm" onclick="limparFiltros()">Limpar</button></div><div id="historicoLista"></div></div>`; }
+    function atualizarHistoricoLista(){ let inicio=document.getElementById('filtroDataInicio')?.value; let fim=document.getElementById('filtroDataFim')?.value; let tipo=document.getElementById('filtroTipo')?.value; let nome=document.getElementById('filtroNome')?.value?.toLowerCase(); let f=[...historicoAcessos].sort((a,b)=>b.timestamp-a.timestamp); if(inicio) f=f.filter(h=>h.data>=inicio); if(fim) f=f.filter(h=>h.data<=fim); if(tipo) f=f.filter(h=>h.tipo===tipo); if(nome) f=f.filter(h=>h.nome.toLowerCase().includes(nome)||h.empresaNome.toLowerCase().includes(nome)); historicoFiltradoAtual=f; document.getElementById('historicoLista').innerHTML=`<div class="table-wrapper"><table class="table"><thead><th>Data</th><th>Hora</th><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Ação</th><th>Observação</th></thead><tbody>${f.map(h=>`<tr><td>${h.data}</td><td>${h.hora}</td><td>${h.nome}</td><td>${h.empresaNome}</td><td><span class="badge ${h.tipo==='prestador'?'badge-success':'badge-info'}">${h.tipo}</span></td><td><span class="badge ${h.acao==='entrada'?'badge-success':'badge-warning'}">${h.acao}</span></td><td>${h.observacao||'-'}</td></tr>`).join('')}</tbody></table></div><div class="alert alert-info">Total: ${f.length} registos</div>`; }
     
-    function atualizarHistoricoLista() {
-        let inicio = document.getElementById('filtroDataInicio')?.value;
-        let fim = document.getElementById('filtroDataFim')?.value;
-        let tipo = document.getElementById('filtroTipo')?.value;
-        let acao = document.getElementById('filtroAcao')?.value;
-        let nome = document.getElementById('filtroNome')?.value?.toLowerCase();
-        
-        let filtrados = [...historicoAcessos].sort((a, b) => b.timestamp - a.timestamp);
-        if (inicio) filtrados = filtrados.filter(h => h.data >= inicio);
-        if (fim) filtrados = filtrados.filter(h => h.data <= fim);
-        if (tipo) filtrados = filtrados.filter(h => h.tipo === tipo);
-        if (acao) filtrados = filtrados.filter(h => h.acao === acao);
-        if (nome) filtrados = filtrados.filter(h => h.nome.toLowerCase().includes(nome) || h.empresaNome.toLowerCase().includes(nome));
-        
-        historicoFiltradoAtual = filtrados;
-        
-        let html = '<table class="table"><thead><th>Data</th><th>Hora</th><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Ação</th><th>Ordem</th></thead><tbody>';
-        filtrados.forEach((h, idx) => {
-            html += '<tr><td>' + h.data + '</td><td>' + h.hora + '</td><td>' + h.nome + '</td><td>' + h.empresaNome + '</td>';
-            html += '<td><span class="badge ' + (h.tipo === 'prestador' ? 'badge-success' : h.tipo === 'visita' ? 'badge-info' : 'badge-warning') + '">' + (h.tipo === 'prestador' ? 'Prestador' : h.tipo === 'visita' ? 'Visita' : 'Transportista') + '</span></td>';
-            html += '<td><span class="badge ' + (h.acao === 'entrada' ? 'badge-success' : 'badge-warning') + '">' + (h.acao === 'entrada' ? 'Entrada' : 'Saída') + '</span></td>';
-            html += '<td>' + (idx + 1) + 'º</td></tr>';
-        });
-        html += '</tbody></table><div class="alert alert-info">Total: ' + filtrados.length + ' registos</div>';
-        document.getElementById('historicoLista').innerHTML = html;
-    }
+    function renderInterior(){ let isVis=currentUser==='visualizador'; return `<div class="card"><div class="card-title">👥 Pessoas no Interior<button class="btn-excel btn-sm" onclick="exportToExcel(pessoasNoInterior,'Pessoas_No_Interior',['nome','empresaNome','tipo','entrada','data'])">📊 Excel</button></div><div class="form-group"><input type="text" id="filtroInterior" placeholder="🔍 Filtrar..." class="filter-input" style="width:100%;" onkeyup="filtrarInterior()"></div><div id="interiorLista"></div></div>`; }
+    window.filtrarInterior=function(){ let s=document.getElementById('filtroInterior')?.value?.toLowerCase()||''; let f=pessoasNoInterior.filter(p=>p.nome.toLowerCase().includes(s)||p.empresaNome.toLowerCase().includes(s)); let isVis=currentUser==='visualizador'; document.getElementById('interiorLista').innerHTML=`<div class="table-wrapper"><table class="table"><thead><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th>${isVis?'':'<th>Ação</th>'}</thead><tbody>${f.map(p=>`<tr><td>${p.nome}</td><td>${p.empresaNome}</td><td><span class="badge ${p.tipo==='prestador'?'badge-success':p.tipo==='visita'?'badge-info':'badge-warning'}">${p.tipo==='prestador'?'Prestador':p.tipo==='visita'?'Visita':'Transportista'}</span></td><td>${p.entrada}</td>${isVis?'':`<td><button class="btn-warning btn-sm" onclick="registrarSaida(${p.id})">Saída</button></td>`}</tr>`).join('')}</tbody></table></div><div class="alert alert-info">Total: ${f.length} pessoas</div>`; };
     
-    function renderPrestadores() {
-        return '<div class="card"><div class="card-title">🏢 Prestadores de Serviço<button class="btn-excel btn-sm" style="margin-left:1rem;" onclick="exportarPrestadores()">📊 Exportar Excel</button></div>' +
-            '<div class="form-group"><input type="text" id="filtroPrestador" placeholder="🔍 Filtrar por nome/NIF..." class="filter-input" style="width:100%;" onkeyup="filtrarPrestadoresLista()"></div>' +
-            '<div id="prestadoresLista"></div></div>' +
-            '<div class="card"><div class="card-title">➕ Novo Prestador</div>' +
-            '<div class="form-group"><label>NIF</label><input type="text" id="novoNif" placeholder="123456789"></div>' +
-            '<div class="form-group"><label>Nome</label><input type="text" id="novoNome" placeholder="Nome da empresa"></div>' +
-            '<div class="form-group"><label>Email</label><input type="email" id="novoEmail" placeholder="contato@empresa.pt"></div>' +
-            '<div class="form-group"><label>Trabalhadores (separados por vírgula)</label><input type="text" id="novoTrabalhadores" placeholder="João Silva, Maria Santos"></div>' +
-            '<button class="btn btn-success" onclick="criarPrestador()">Registrar</button></div>';
-    }
+    // Funções de validação
+    window.abrirValidacaoPrestador=function(id){ let p=prestadores.find(p=>p.id===id); let html=`<h3>Validar Documentos - ${p.nome}</h3><div style="max-height:500px; overflow-y:auto;">`; documentosEmpresa.forEach(doc=>{ let estado=p.documentos[doc.id]?.estado||'pendente'; html+=`<div class="card" style="margin-bottom:0.8rem;"><strong>${doc.id} - ${doc.nome}</strong><div class="form-group"><label>Estado</label><select id="doc_${doc.id}"><option ${estado==='valido'?'selected':''}>valido</option><option ${estado==='pendente'?'selected':''}>pendente</option><option ${estado==='invalido'?'selected':''}>invalido</option></select></div><div class="form-group"><label>Observações</label><textarea readonly style="background:#f5f5f5;">${doc.observacoes}</textarea></div></div>`; }); html+=`</div><button class="btn btn-success" onclick="salvarValidacaoPrestador(${id})">Salvar</button>`; showModal(html); };
+    window.salvarValidacaoPrestador=function(id){ let p=prestadores.find(p=>p.id===id); documentosEmpresa.forEach(doc=>{ let estado=document.getElementById(`doc_${doc.id}`)?.value; if(estado) p.documentos[doc.id]={...p.documentos[doc.id], estado:estado}; }); verificarStatusPrestador(p); colaboradores.filter(c=>c.empresaId===id).forEach(c=>verificarStatusColaborador(c)); maquinas.filter(m=>m.empresaId===id).forEach(m=>verificarStatusMaquina(m)); closeModal(); renderPage('prestadores'); };
+    window.abrirValidacaoColaborador=function(id){ let c=colaboradores.find(c=>c.id===id); let html=`<h3>Validar Documentos - ${c.nome}</h3><div style="max-height:500px; overflow-y:auto;">`; documentosColaborador.forEach(doc=>{ let estado=c.documentos[doc.id]?.estado||'pendente'; html+=`<div class="card"><strong>${doc.id} - ${doc.nome}</strong><div class="form-group"><label>Estado</label><select id="doc_${doc.id}"><option ${estado==='valido'?'selected':''}>valido</option><option ${estado==='pendente'?'selected':''}>pendente</option><option ${estado==='invalido'?'selected':''}>invalido</option></select></div><div class="form-group"><label>Observações</label><textarea readonly>${doc.observacoes}</textarea></div></div>`; }); html+=`</div><button class="btn btn-success" onclick="salvarValidacaoColaborador(${id})">Salvar</button>`; showModal(html); };
+    window.salvarValidacaoColaborador=function(id){ let c=colaboradores.find(c=>c.id===id); documentosColaborador.forEach(doc=>{ let estado=document.getElementById(`doc_${doc.id}`)?.value; if(estado) c.documentos[doc.id]={...c.documentos[doc.id], estado:estado}; }); verificarStatusColaborador(c); closeModal(); renderPage('colaboradores'); };
+    window.abrirValidacaoMaquina=function(id){ let m=maquinas.find(m=>m.id===id); let html=`<h3>Validar Documentos - ${m.nome}</h3><div style="max-height:500px; overflow-y:auto;">`; documentosMaquina.forEach(doc=>{ let estado=m.documentos[doc.id]?.estado||'pendente'; html+=`<div class="card"><strong>${doc.id} - ${doc.nome}</strong><div class="form-group"><label>Estado</label><select id="doc_${doc.id}"><option ${estado==='valido'?'selected':''}>valido</option><option ${estado==='pendente'?'selected':''}>pendente</option><option ${estado==='invalido'?'selected':''}>invalido</option></select></div><div class="form-group"><label>Observações</label><textarea readonly>${doc.observacoes}</textarea></div></div>`; }); html+=`</div><button class="btn btn-success" onclick="salvarValidacaoMaquina(${id})">Salvar</button>`; showModal(html); };
+    window.salvarValidacaoMaquina=function(id){ let m=maquinas.find(m=>m.id===id); documentosMaquina.forEach(doc=>{ let estado=document.getElementById(`doc_${doc.id}`)?.value; if(estado) m.documentos[doc.id]={...m.documentos[doc.id], estado:estado}; }); verificarStatusMaquina(m); closeModal(); renderPage('maquinas'); };
     
-    window.filtrarPrestadoresLista = function() {
-        let search = document.getElementById('filtroPrestador')?.value?.toLowerCase() || '';
-        let filtrados = prestadores.filter(p => p.nome.toLowerCase().includes(search) || p.nif.includes(search));
-        prestadoresFiltradosAtual = filtrados;
-        document.getElementById('prestadoresLista').innerHTML = gerarTabelaPrestadores(filtrados);
-    };
+    window.criarPrestador=function(){ let nif=document.getElementById('novoNif')?.value; let nome=document.getElementById('novoNome')?.value; let email=document.getElementById('novoEmail')?.value; let trabStr=document.getElementById('novoTrabalhadores')?.value; if(!nif||!nome){ showToast('Preencha NIF e Nome','warning'); return; } let trabalhadores=trabStr?trabStr.split(',').map(t=>t.trim()):[]; let novo={id:prestadores.length+1, nome, nif, email, status:"pendente", documentos:{}, trabalhadores}; documentosEmpresa.forEach(doc=>{ novo.documentos[doc.id]={estado:"pendente", validade:"", observacao:doc.observacoes}; }); prestadores.push(novo); showToast(`✅ Prestador "${nome}" registado!`,'success'); renderPage('prestadores'); };
+    window.criarColaborador=function(){ let nome=document.getElementById('novoColabNome')?.value; let nif=document.getElementById('novoColabNif')?.value; let pid=parseInt(document.getElementById('novoColabPrestador')?.value); if(!nome||!nif){ showToast('Preencha Nome e Nº Contribuinte','warning'); return; } let p=prestadores.find(p=>p.id===pid); let novo={id:colaboradores.length+1, nome, nifContribuinte:nif, empresaId:pid, empresaNome:p?.nome||'', status:"pendente", documentos:{}}; documentosColaborador.forEach(doc=>{ novo.documentos[doc.id]={estado:"pendente", validade:"", observacao:doc.observacoes}; }); colaboradores.push(novo); showToast(`✅ Colaborador "${nome}" registado!`,'success'); renderPage('colaboradores'); };
+    window.criarMaquina=function(){ let nome=document.getElementById('novaMaquinaNome')?.value; let mat=document.getElementById('novaMaquinaMatricula')?.value; let pid=parseInt(document.getElementById('novaMaquinaPrestador')?.value); let mid=parseInt(document.getElementById('novaMaquinaManobrador')?.value); if(!nome||!mat){ showToast('Preencha Nome e Matrícula','warning'); return; } let p=prestadores.find(p=>p.id===pid); let man=colaboradores.find(c=>c.id===mid); let nova={id:maquinas.length+1, nome, matricula:mat, empresaId:pid, empresaNome:p?.nome||'', status:"pendente", documentos:{}, manobradorId:mid||null, manobradorNome:man?.nome||''}; documentosMaquina.forEach(doc=>{ nova.documentos[doc.id]={estado:"pendente", validade:"", observacao:doc.observacoes}; }); maquinas.push(nova); showToast(`✅ Máquina "${nome}" registada!`,'success'); renderPage('maquinas'); };
     
-    function gerarTabelaPrestadores(lista) {
-        let html = '<table class="table"><thead><th>Empresa</th><th>NIF</th><th>Email</th><th>Trabalhadores</th><th>Status</th><th>Ações</th></thead><tbody>';
-        lista.forEach(p => {
-            html += '<tr><td>' + p.nome + '</td><td>' + p.nif + '</td><td>' + p.email + '</td><td>' + p.trabalhadores.join(', ') + '</td>';
-            html += '<td><span class="badge ' + (p.status === 'autorizado' ? 'badge-success' : 'badge-warning') + '">' + (p.status === 'autorizado' ? 'Autorizado' : 'Pendente') + '</span></td>';
-            html += '<td><button class="btn-secondary btn-sm" onclick="abrirValidacao(' + p.id + ')">Validar Docs</button></td></tr>';
-        });
-        html += '</tbody></table>';
-        return html;
-    }
+    window.aplicarFiltros=atualizarHistoricoLista;
+    window.limparFiltros=function(){ document.getElementById('filtroDataInicio').value=''; document.getElementById('filtroDataFim').value=''; document.getElementById('filtroTipo').value=''; document.getElementById('filtroNome').value=''; atualizarHistoricoLista(); };
+    window.registrarSaida=registrarSaida;
     
-    function renderDocumentos() {
-        return '<div class="card"><div class="card-title">📄 Validação Documental<button class="btn-excel btn-sm" style="margin-left:1rem;" onclick="exportarDocumentos()">📊 Exportar Excel</button></div>' +
-            '<div class="form-group"><input type="text" id="filtroDoc" placeholder="🔍 Filtrar prestador..." class="filter-input" style="width:100%;" onkeyup="filtrarDocumentos()"></div>' +
-            '<div id="documentosLista"></div></div>';
-    }
-    
-    window.filtrarDocumentos = function() {
-        let search = document.getElementById('filtroDoc')?.value?.toLowerCase() || '';
-        let filtrados = prestadores.filter(p => p.nome.toLowerCase().includes(search));
-        documentosFiltradosAtual = filtrados;
-        document.getElementById('documentosLista').innerHTML = gerarTabelaDocumentos(filtrados);
-    };
-    
-    function gerarTabelaDocumentos(lista) {
-        let html = '<table class="table"><thead><th>Prestador</th><th>Seguro</th><th>Alvará</th><th>Formação</th><th>Status</th><th>Ação</th></thead><tbody>';
-        lista.forEach(p => {
-            html += '<tr><td>' + p.nome + '</td>';
-            html += '<td><span class="badge ' + (p.documentos.seguranca === 'valido' ? 'badge-success' : p.documentos.seguranca === 'invalido' ? 'badge-danger' : 'badge-warning') + '">' + p.documentos.seguranca + '</span></td>';
-            html += '<td><span class="badge ' + (p.documentos.alvara === 'valido' ? 'badge-success' : p.documentos.alvara === 'invalido' ? 'badge-danger' : 'badge-warning') + '">' + p.documentos.alvara + '</span></td>';
-            html += '<td><span class="badge ' + (p.documentos.formacao === 'valido' ? 'badge-success' : p.documentos.formacao === 'invalido' ? 'badge-danger' : 'badge-warning') + '">' + p.documentos.formacao + '</span></td>';
-            html += '<td><span class="badge ' + (p.status === 'autorizado' ? 'badge-success' : 'badge-warning') + '">' + p.status + '</span></td>';
-            html += '<td><button class="btn-primary btn-sm" onclick="abrirValidacao(' + p.id + ')">Validar</button></td></tr>';
-        });
-        html += '</tbody></table>';
-        return html;
-    }
-    
-    function renderInterior() {
-        return '<div class="card"><div class="card-title">👥 Pessoas no Interior<button class="btn-excel btn-sm" style="margin-left:1rem;" onclick="exportarInteriorCompleto()">📊 Exportar Excel</button></div>' +
-            '<div class="form-group"><input type="text" id="filtroInterior" placeholder="🔍 Filtrar por nome/empresa..." class="filter-input" style="width:100%;" onkeyup="filtrarInterior()"></div>' +
-            '<div id="interiorLista"></div></div>';
-    }
-    
-    window.filtrarInterior = function() {
-        let search = document.getElementById('filtroInterior')?.value?.toLowerCase() || '';
-        let filtrados = pessoasNoInterior.filter(p => p.nome.toLowerCase().includes(search) || p.empresaNome.toLowerCase().includes(search));
-        interiorFiltradoAtual = filtrados;
-        let html = '<table class="table"><thead><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th><th>Ação</th></thead><tbody>';
-        filtrados.forEach(p => {
-            html += '<tr><td>' + p.nome + '</td><td>' + p.empresaNome + '</td>';
-            html += '<td><span class="badge ' + (p.tipo === 'prestador' ? 'badge-success' : p.tipo === 'visita' ? 'badge-info' : 'badge-warning') + '">' + p.tipo + '</span></td>';
-            html += '<td>' + p.entrada + '</td><td><button class="btn-warning btn-sm" onclick="registrarSaida(' + p.id + ')">Saída</button></td></tr>';
-        });
-        html += '</tbody></table><div class="alert alert-info">Total: ' + filtrados.length + ' pessoas</div>';
-        document.getElementById('interiorLista').innerHTML = html;
-    };
-    
-    function renderDashboard() {
-        let hoje = new Date().toLocaleDateString('pt-PT');
-        let entradasHoje = historicoAcessos.filter(h => h.acao === 'entrada' && h.data === hoje).length;
-        let interiorHtml = '<table class="table"><thead><th>Nome</th><th>Empresa</th><th>Tipo</th><th>Entrada</th></thead><tbody>';
-        pessoasNoInterior.forEach(p => {
-            interiorHtml += '<tr><td>' + p.nome + '</td><td>' + p.empresaNome + '</td><td><span class="badge ' + (p.tipo === 'prestador' ? 'badge-success' : 'badge-info') + '">' + p.tipo + '</span></td><td>' + p.entrada + '</td></tr>';
-        });
-        interiorHtml += '</tbody></table>';
-        
-        let ultimosHtml = '<table class="table"><thead><th>Data/Hora</th><th>Nome</th><th>Empresa</th><th>Ação</th></thead><tbody>';
-        historicoAcessos.slice(0, 5).forEach(h => {
-            ultimosHtml += '<tr><td>' + h.data + ' ' + h.hora + '</td><td>' + h.nome + '</td><td>' + h.empresaNome + '</td><td><span class="badge ' + (h.acao === 'entrada' ? 'badge-success' : 'badge-warning') + '">' + h.acao + '</span></td></tr>';
-        });
-        ultimosHtml += '</tbody></table>';
-        
-        return '<div class="stats-grid">' +
-            '<div class="stat-card"><div class="stat-number">' + prestadores.length + '</div><div>Prestadores</div></div>' +
-            '<div class="stat-card"><div class="stat-number">' + prestadores.filter(p => p.status === 'autorizado').length + '</div><div>Autorizados</div></div>' +
-            '<div class="stat-card"><div class="stat-number">' + pessoasNoInterior.length + '</div><div>No Interior</div></div>' +
-            '<div class="stat-card"><div class="stat-number">' + entradasHoje + '</div><div>Entradas Hoje</div></div></div>' +
-            '<div class="card"><div class="card-title">👥 No Interior Agora</div>' + (pessoasNoInterior.length === 0 ? '<div class="alert alert-info">Nenhuma pessoa</div>' : interiorHtml) + '</div>' +
-            '<div class="card"><div class="card-title">📋 Últimos Acessos</div>' + ultimosHtml + '</div>';
-    }
-    
-    // EXPORTAÇÕES
-    window.exportarHistoricoFiltrado = function() {
-        exportToExcel(historicoFiltradoAtual.length ? historicoFiltradoAtual : historicoAcessos, 'Historico_Acessos', ['data', 'hora', 'nome', 'empresaNome', 'tipo', 'acao']);
-    };
-    
-    window.exportarPrestadores = function() {
-        exportToExcel(prestadoresFiltradosAtual.length ? prestadoresFiltradosAtual : prestadores, 'Prestadores_Servico', ['nome', 'nif', 'email', 'status', 'trabalhadores']);
-    };
-    
-    window.exportarDocumentos = function() {
-        let dados = (documentosFiltradosAtual.length ? documentosFiltradosAtual : prestadores).map(p => ({
-            nome: p.nome, seguro: p.documentos.seguranca, alvara: p.documentos.alvara, formacao: p.documentos.formacao, status: p.status
-        }));
-        exportToExcel(dados, 'Validacao_Documental', ['nome', 'seguro', 'alvara', 'formacao', 'status']);
-    };
-    
-    window.exportarInteriorCompleto = function() {
-        exportToExcel(interiorFiltradoAtual.length ? interiorFiltradoAtual : pessoasNoInterior, 'Pessoas_No_Interior', ['nome', 'empresaNome', 'tipo', 'entrada', 'data']);
-    };
-    
-    // VALIDAÇÃO
-    window.abrirValidacao = function(id) {
-        let p = prestadores.find(p => p.id === id);
-        showModal('<h3>Validar Documentos - ' + p.nome + '</h3>' +
-            '<div class="form-group"><label>Seguro</label><select id="val_seguranca"><option ' + (p.documentos.seguranca === 'valido' ? 'selected' : '') + '>valido</option><option ' + (p.documentos.seguranca === 'pendente' ? 'selected' : '') + '>pendente</option><option ' + (p.documentos.seguranca === 'invalido' ? 'selected' : '') + '>invalido</option></select></div>' +
-            '<div class="form-group"><label>Alvará</label><select id="val_alvara"><option ' + (p.documentos.alvara === 'valido' ? 'selected' : '') + '>valido</option><option ' + (p.documentos.alvara === 'pendente' ? 'selected' : '') + '>pendente</option><option ' + (p.documentos.alvara === 'invalido' ? 'selected' : '') + '>invalido</option></select></div>' +
-            '<div class="form-group"><label>Formação</label><select id="val_formacao"><option ' + (p.documentos.formacao === 'valido' ? 'selected' : '') + '>valido</option><option ' + (p.documentos.formacao === 'pendente' ? 'selected' : '') + '>pendente</option><option ' + (p.documentos.formacao === 'invalido' ? 'selected' : '') + '>invalido</option></select></div>' +
-            '<button class="btn-success" onclick="salvarValidacao(' + id + ')">Salvar</button>');
-    };
-    
-    window.salvarValidacao = function(id) {
-        let p = prestadores.find(p => p.id === id);
-        p.documentos.seguranca = document.getElementById('val_seguranca').value;
-        p.documentos.alvara = document.getElementById('val_alvara').value;
-        p.documentos.formacao = document.getElementById('val_formacao').value;
-        verificarAutorizacao(p);
-        closeModal();
-        renderPage('documentos');
-    };
-    
-    window.criarPrestador = function() {
-        let nif = document.getElementById('novoNif')?.value;
-        let nome = document.getElementById('novoNome')?.value;
-        let email = document.getElementById('novoEmail')?.value;
-        let trabalhadoresStr = document.getElementById('novoTrabalhadores')?.value;
-        if (!nif || !nome) {
-            showToast('Preencha NIF e Nome', 'warning');
-            return;
-        }
-        let trabalhadores = trabalhadoresStr ? trabalhadoresStr.split(',').map(t => t.trim()) : [];
-        let novo = {
-            id: prestadores.length + 1, nome, nif, email, status: "pendente",
-            documentos: { seguranca: "pendente", alvara: "pendente", formacao: "pendente" },
-            trabalhadores: trabalhadores
-        };
-        prestadores.push(novo);
-        showToast('✅ ' + nome + ' registado!', 'success');
-        renderPage('prestadores');
-    };
-    
-    const pagesRender = {
-        dashboard: renderDashboard,
-        acessos: renderAcessos,
-        prestadores: renderPrestadores,
-        documentos: renderDocumentos,
-        historico: renderHistorico,
-        interior: renderInterior
-    };
-    
-    function renderPage(page) {
-        currentPage = page;
-        let renderFn = pagesRender[page];
-        if (renderFn) {
-            document.getElementById('content-body').innerHTML = renderFn();
-        }
-        if (page === 'historico') setTimeout(atualizarHistoricoLista, 100);
-        if (page === 'prestadores') setTimeout(filtrarPrestadoresLista, 100);
-        if (page === 'documentos') setTimeout(filtrarDocumentos, 100);
-        if (page === 'interior') setTimeout(filtrarInterior, 100);
-        
-        let titles = {
-            dashboard: 'Dashboard',
-            acessos: 'Controlo de Acessos',
-            prestadores: 'Prestadores',
-            documentos: 'Validação Documental',
-            historico: 'Histórico e Filtros',
-            interior: 'Pessoas no Interior'
-        };
-        document.getElementById('page-title').innerHTML = titles[page] || page;
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('data-page') === page) item.classList.add('active');
-        });
-    }
-    
-    function atualizarPermissoes() {
-        let isAdmin = currentUser === 'admin';
-        let menuPrestadores = document.getElementById('menuPrestadores');
-        let menuDocumentos = document.getElementById('menuDocumentos');
-        if (menuPrestadores) menuPrestadores.style.display = isAdmin ? 'flex' : 'none';
-        if (menuDocumentos) menuDocumentos.style.display = isAdmin ? 'flex' : 'none';
-        document.getElementById('userRoleBadge').innerHTML = isAdmin ? '👑 Administrador' : '🚪 Portaria';
-        if (!isAdmin && (currentPage === 'prestadores' || currentPage === 'documentos')) {
-            renderPage('dashboard');
-        } else {
-            renderPage(currentPage);
-        }
-    }
-    
-    window.aplicarFiltrosHistorico = atualizarHistoricoLista;
-    window.limparFiltrosHistorico = function() {
-        document.getElementById('filtroDataInicio').value = '';
-        document.getElementById('filtroDataFim').value = '';
-        document.getElementById('filtroTipo').value = '';
-        document.getElementById('filtroAcao').value = '';
-        document.getElementById('filtroNome').value = '';
-        atualizarHistoricoLista();
-    };
-    window.registrarSaida = registrarSaida;
-    window.navigateTo = function(page) {
-        if ((page === 'prestadores' || page === 'documentos') && currentUser !== 'admin') return;
-        renderPage(page);
-    };
-    
-    document.querySelectorAll('.user-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentUser = btn.getAttribute('data-user');
-            atualizarPermissoes();
-            showToast('Perfil: ' + (currentUser === 'admin' ? 'Administrador' : 'Portaria'), 'info');
-        });
-    });
-    
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            let page = item.getAttribute('data-page');
-            window.navigateTo(page);
-        });
-    });
-    
+    const pagesRender={dashboard:renderDashboard, acessos:renderAcessos, prestadores:renderPrestadores, colaboradores:renderColaboradores, documentos:renderDocumentos, maquinas:renderMaquinas, historico:renderHistorico, interior:renderInterior};
+    function renderPage(page){ currentPage=page; let fn=pagesRender[page]; if(fn) document.getElementById('content-body').innerHTML=fn(); if(page==='historico') setTimeout(atualizarHistoricoLista,100); if(page==='prestadores') setTimeout(window.filtrarPrestadoresLista,100); if(page==='colaboradores') setTimeout(window.filtrarColaboradoresLista,100); if(page==='maquinas') setTimeout(window.filtrarMaquinas,100); if(page==='documentos') setTimeout(window.filtrarDocumentos,100); if(page==='interior') setTimeout(window.filtrarInterior,100); let titles={dashboard:'Dashboard',acessos:'Controlo Acessos',prestadores:'Prestadores',colaboradores:'Colaboradores',documentos:'Validação Documental',maquinas:'Máquinas',historico:'Histórico',interior:'Pessoas no Interior'}; document.getElementById('page-title').innerHTML=titles[page]; document.querySelectorAll('.nav-item').forEach(i=>{ i.classList.remove('active'); if(i.getAttribute('data-page')===page) i.classList.add('active'); }); }
+    function atualizarPermissoes(){ let isAdmin=currentUser==='admin'; let podeEditar=isAdmin; document.getElementById('menuPrestadores').style.display=podeEditar?'flex':'none'; document.getElementById('menuColaboradores').style.display=podeEditar?'flex':'none'; document.getElementById('menuDocumentos').style.display=podeEditar?'flex':'none'; document.getElementById('menuMaquinas').style.display=podeEditar?'flex':'none'; let roleText=isAdmin?'👑 Administrador':(currentUser==='visualizador'?'👁️ Visualizador':'🚪 Portaria'); document.getElementById('userRoleBadge').innerHTML=roleText; if(!isAdmin && (currentPage==='prestadores'||currentPage==='colaboradores'||currentPage==='documentos'||currentPage==='maquinas')) renderPage('dashboard'); else renderPage(currentPage); }
+    document.querySelectorAll('.user-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentUser=btn.getAttribute('data-user'); atualizarPermissoes(); showToast(`Perfil: ${currentUser==='admin'?'Administrador':currentUser==='visualizador'?'Visualizador':'Portaria'}`,'info'); }); });
+    document.querySelectorAll('.nav-item').forEach(item=>{ item.addEventListener('click',()=>{ let page=item.getAttribute('data-page'); if((page==='prestadores'||page==='colaboradores'||page==='documentos'||page==='maquinas') && currentUser!=='admin') return; renderPage(page); }); });
+    inicializarDocumentos();
     atualizarPermissoes();
 </script>
 </body>
